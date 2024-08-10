@@ -8,11 +8,11 @@ interface IProps {
 
 const Row = ({ title, movies }: IProps) => {
 	return (
-		<div>
-			<h1 className="font- text-sm text-theme-off-white transition-all duration-[0.4s] hover:text-white cursor-pointer w-fit">
+		<div className="overflow-x-scroll max-w-[100%] scrollbar-hide">
+			<h1 className="font-semibold text-sm lg:text-xl text-theme-off-white transition-all duration-200 hover:text-white cursor-pointer w-fit">
 				{title}
 			</h1>
-			<div className="flex h-[140px] border-2 border-green-700 space-x-2 items-center">
+			<div className="flex h-40 border-2 border-green-700 space-x-2 items-center">
 				{movies.map((movie) => {
 					return <Thumbnail movie={movie} key={movie.id} />;
 				})}

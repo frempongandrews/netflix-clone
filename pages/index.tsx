@@ -39,12 +39,12 @@ export default function Home({
 		<div className="">
 			<Header />
 			{/* content */}
-			<main className="pl-4 lg:pl-16">
+			<main className="pl-4 lg:pl-16 pb-28">
 				{/* banner */}
 				<Banner movie={movie} />
 
 				{/* rows */}
-				<section className="flex flex-col gap-10 lg:-mt-10">
+				<section className="flex flex-col gap-10 lg:-mt-16 transition-all duration-200">
 					<Row title="Trending Now" movies={trendingNow} />
 					<Row title="Top Rated" movies={topRated} />
 					<Row title="Action Movies" movies={actionMovies} />

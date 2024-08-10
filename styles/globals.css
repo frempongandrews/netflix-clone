@@ -9,7 +9,27 @@
 	body {
 		/* theme-black has been defined in tailwind config */
 		@apply bg-theme-black text-white;
-		/* overflow-x: scroll !important; */
+	}
+	/* ===== Scrollbar CSS ===== */
+	/* Firefox */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: #e20522 transparent;
+	}
+
+	/* Chrome, Edge, and Safari */
+	*::-webkit-scrollbar {
+		width: 84px;
+	}
+
+	*::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		background-color: #e20522;
+		border-radius: 19px;
+		border: 3px solid #ffffff;
 	}
 }
 
