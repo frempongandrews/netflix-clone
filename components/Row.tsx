@@ -34,7 +34,7 @@ const Row = ({ title, movies }: IProps) => {
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				fill="currentColor"
-				className={`size-6 absolute left-2 top-[55%] z-40 cursor-pointer transition-all duration-500 opacity-0 ${
+				className={`size-6 absolute left-2 top-[55%] z-40 cursor-pointer transition-all duration-500 opacity-0 hover:scale-125 ${
 					isRowScrolled && "group-hover:opacity-100"
 				} `}
 				onClick={() => handleMoviesScroll("left")}
@@ -51,7 +51,7 @@ const Row = ({ title, movies }: IProps) => {
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				fill="currentColor"
-				className="size-6 absolute right-2 top-[55%] z-50 cursor-pointer transition-all duration-500 group-hover:opacity-100 opacity-0"
+				className="size-6 absolute right-2 top-[55%] z-50 cursor-pointer transition-all duration-500 group-hover:opacity-100 opacity-0 hover:scale-125"
 				onClick={() => handleMoviesScroll("right")}
 			>
 				<path
