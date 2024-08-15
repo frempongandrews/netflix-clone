@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Movie } from "../utils/types";
 import Thumbnail from "./Thumbnail";
 
@@ -16,7 +16,6 @@ const Row = ({ title, movies }: IProps) => {
 		setIsRowScrolled(true);
 
 		if (rowRef.current) {
-			console.log("*******YESSS");
 			const { clientWidth, scrollLeft } = rowRef.current;
 			const scrollTo =
 				direction === "left"

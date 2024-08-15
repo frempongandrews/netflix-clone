@@ -9,7 +9,7 @@ interface IProps {
 const Banner = ({ movie }: IProps) => {
 	return (
 		<div className="flex flex-col py-[160px]">
-			<div className="w-[100%] h-[95vh] lg:h-[85vh] absolute top-0 left-0 -z-10">
+			<div className="w-[100%] h-[95vh] lg:h-[90vh] absolute top-0 left-0 -z-10">
 				<Image
 					priority
 					src={`${moviesImageBaseUrl}${
