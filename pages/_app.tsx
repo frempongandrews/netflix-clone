@@ -1,11 +1,13 @@
-import Header from "../components/Header";
+import AuthContextProvider from "../hooks/useAuth";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
-			<Component {...pageProps} />
+			<AuthContextProvider>
+				<Component {...pageProps} />
+			</AuthContextProvider>
 		</>
 	);
 }
