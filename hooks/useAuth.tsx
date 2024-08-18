@@ -37,11 +37,14 @@ const AuthContextProvider = ({ children }: IProps) => {
 	const router = useRouter();
 
 	useEffect(() => {
+		setIsLoading(true);
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				setUser(user);
+				setIsLoading(false);
 			} else {
 				setUser(null);
+				setIsLoading(false);
 				router.push("/login");
 			}
 		});
@@ -51,7 +54,8 @@ const AuthContextProvider = ({ children }: IProps) => {
 		setIsLoading(true);
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCred) => {
-				setUser;
+				setUser(userCred.user);
+				setIsLoading(false);
 			})
 			.catch((err) => {
 				setError(err.message);
