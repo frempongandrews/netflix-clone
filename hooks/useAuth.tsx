@@ -18,7 +18,7 @@ interface IAuthProps {
 	password: string;
 }
 
-interface IAuthContext {
+export interface IAuthContext {
 	user: User | null;
 	error: string | null;
 	isLoading: boolean;
@@ -58,6 +58,7 @@ const AuthContextProvider = ({ children }: IProps) => {
 				setIsLoading(false);
 			})
 			.catch((err) => {
+				alert(err.message);
 				setError(err.message);
 				setIsLoading(false);
 			})

@@ -3,32 +3,40 @@ import Header from "../components/Header";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
+import { IAuthContext, useAuth } from "../hooks/useAuth";
 
-type LoginInputs = {
+type AuthInputs = {
 	email: string;
 	password: string;
 };
 
 const LoginPage = () => {
-	const { handleSubmit, register, formState } = useForm<LoginInputs>();
+	const { handleSubmit, register, formState } = useForm<AuthInputs>();
 	const { errors } = formState;
+
+	const { loginUser, registerUser } = useAuth() as IAuthContext;
 
 	useEffect(() => {
 		console.log("*******FormState", formState.errors);
 	});
 
-	const onLoginUser: SubmitHandler<LoginInputs> = (data) => {
+	const onLoginUser: SubmitHandler<AuthInputs> = (data) => {
 		console.log("******Data", data);
+		const { email, password } = data;
+		loginUser({ email, password });
+	};
+
+	const onRegisterUser = (data: AuthInputs) => {
+		const { email, password } = data;
+		registerUser({ email, password });
 	};
 
 	return (
 		<div className="h-[100vh]">
-			<Image
-				fill
-				objectFit="cover"
-				alt="Netflix image"
-				src={`https://rb.gy/p2hphi`}
-				className="-z-10 hidden md:inline"
+			<img
+				src="https://rb.gy/p2hphi"
+				className="z-[-10] hidden md:inline w-[100%] h-[100%] fixed top-0 left-0"
+				style={{ objectFit: "cover" }}
 			/>
 			<Header showNavigation={false} />
 			<div className="flex h-[100%] md:items-center pt-[100px] p-4 lg:p-6">
@@ -130,9 +138,16 @@ const LoginPage = () => {
 					<div className="mt-8">
 						<p className="text-sm">
 							<span className="text-gray-400">New to Netlflix? </span>
-							<Link href="/register" className="text-white hover:underline">
+							{/* <Link href="/register">
+								<a className="text-white hover:underline">Sign up now</a>
+							</Link> */}
+
+							<span
+								className="text-white hover:underline cursor-pointer"
+								onClick={() => alert("hello")}
+							>
 								Sign up now
-							</Link>
+							</span>
 						</p>
 					</div>
 				</form>

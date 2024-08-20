@@ -17,7 +17,6 @@ const Banner = ({ movie }: IProps) => {
 					}`}
 					alt={`${movie?.title || movie?.name || movie?.original_name} image`}
 					objectFit="cover"
-					fill
 				/>
 			</div>
 			<div>
