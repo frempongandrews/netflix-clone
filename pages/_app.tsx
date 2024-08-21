@@ -6,9 +6,11 @@ import type { AppProps } from "next/app";
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
-			<AuthContextProvider>
+			{/* <AuthContextProvider>
 				<Component {...pageProps} />
-			</AuthContextProvider>
+			</AuthContextProvider> */}
+
+			<Component {...pageProps} />
 		</>
 	);
 }
