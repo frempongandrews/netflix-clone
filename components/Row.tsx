@@ -213,17 +213,18 @@ const Row = ({ title, movies }: IProps) => {
 
 									<div className="w-[100%] md:w-[33%] mt-4 md:mt-[28px] text-xs text-theme-off-white flex flex-col gap-1">
 										<p>
-											<span className="!text-theme-dark-gray">Genres: </span>
+											<span className="text-theme-dark-gray">Genres: </span>
 											<span>Action, Thriller, Adventure</span>
 										</p>
 										<p>
-											<span className="!text-theme-dark-gray">
+											<span className="text-theme-dark-gray">
 												Original language:
 											</span>{" "}
 											<span>en</span>
 										</p>
-										<p className="text-theme-dark-gray">
-											Total votes: <span>991</span>
+										<p>
+											<span className="text-theme-dark-gray">Total votes:</span>{" "}
+											<span>991</span>
 										</p>
 									</div>
 								</div>
