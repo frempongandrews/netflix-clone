@@ -25,6 +25,7 @@ module.exports = {
 				"theme-black": "#141414",
 				"theme-off-white": "#e5e5e5",
 				"theme-red": "#e50914",
+				"theme-dark-gray": "#564d4d",
 
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
