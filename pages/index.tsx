@@ -4,7 +4,6 @@ import moviesRequestUrl from "../utils/moviesRequestsUrl";
 import { Movie } from "../utils/types";
 import Banner from "../components/Banner";
 import Row from "../components/Row";
-import Error from "next/error";
 
 interface IProps {
 	netflixOriginals: Movie[];
