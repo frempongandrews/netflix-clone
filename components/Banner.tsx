@@ -15,7 +15,9 @@ const Banner = ({ movie }: IProps) => {
 					src={`${moviesImageBaseUrl}${
 						movie?.backdrop_path || movie?.poster_path
 					}`}
-					alt={`${movie?.title || movie?.name || movie?.original_name} image`}
+					// alt={`${movie?.title || movie?.name || movie?.original_name} ${
+					// 	movie && "image"
+					// }`}
 					objectFit="cover"
 					layout="fill"
 				/>

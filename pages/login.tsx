@@ -27,6 +27,7 @@ const LoginPage = () => {
 	};
 
 	const onRegisterUser = (data: AuthInputs) => {
+		console.log("******Register Data", data);
 		const { email, password } = data;
 		registerUser({ email, password });
 	};
@@ -143,12 +144,13 @@ const LoginPage = () => {
 								<a className="text-white hover:underline">Sign up now</a>
 							</Link> */}
 
-							<span
+							<button
+								type="button"
 								className="text-white hover:underline cursor-pointer"
-								onClick={() => alert("hello")}
+								onClick={handleSubmit(onRegisterUser)}
 							>
 								Sign up now
-							</span>
+							</button>
 						</p>
 					</div>
 				</form>

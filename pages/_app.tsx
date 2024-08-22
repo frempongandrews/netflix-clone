@@ -5,17 +5,12 @@ import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		// <>
-		// 	<AuthContextProvider>
-		// 		<Component {...pageProps} />
-		// 	</AuthContextProvider>
-		// </>
 		<>
-			{/* <AuthContextProvider>
+			<AuthContextProvider>
 				<Component {...pageProps} />
-			</AuthContextProvider> */}
+			</AuthContextProvider>
 
-			<Component {...pageProps} />
+			{/* <Component {...pageProps} /> */}
 		</>
 	);
 }
