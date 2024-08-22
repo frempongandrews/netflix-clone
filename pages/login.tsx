@@ -42,13 +42,14 @@ const LoginPage = () => {
 			<div className="flex h-[100%] md:items-center pt-[100px] p-4 lg:p-6">
 				{/* form */}
 				<form
-					className="w-[100%] md:max-w-sm mx-auto h-fit md:p-[20px] md:bg-black/75"
+					className="w-[100%] md:max-w-sm mx-auto h-fit md:p-[20px] md:bg-black/75 !z-100"
 					onSubmit={handleSubmit(onLoginUser)}
 				>
 					<h1 className="font-semibold text-2xl">Sign In</h1>
 					<div className="mt-4">
 						<input
 							type="text"
+							autoComplete="off"
 							className={`w-full h-[56px] text-sm px-2 bg-[#333] outline-none ring-transparent focus:outline-none focus:ring-2 ring-2 focus:ring-white rounded-sm transition-all duration-200 ${
 								errors.email && errors.email.message
 									? "outline-2 outline-theme-red"
@@ -153,6 +154,19 @@ const LoginPage = () => {
 				</form>
 				{/* end form */}
 			</div>
+
+			{/* <Image
+				layout="fill"
+				objectFit="cover"
+				alt="Netflix image"
+				src={`https://rb.gy/p2hphi`}
+				className="-z-10 hidden md:inline fixed top-0 left-0"
+			/> */}
+
+			<img
+				src={`https://rb.gy/p2hphi`}
+				className="-z-10 hidden md:inline fixed top-0 left-0 w-[100%] h-[100%] object-cover"
+			/>
 		</div>
 	);
 };
