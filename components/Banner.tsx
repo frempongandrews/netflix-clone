@@ -1,12 +1,30 @@
 import Image from "next/image";
 import { Movie } from "../utils/types";
 import { moviesImageBaseUrl } from "../utils/constants";
+import { useEffect, useState } from "react";
+import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
 
 interface IProps {
 	movie: Movie | null;
 }
 
 const Banner = ({ movie }: IProps) => {
+	const [movieTrailer, setMovieTrailer] = useState("");
+	useEffect(() => {
+		fetchMovieTrailer();
+		console.log("*******movieTrailer", movieTrailer);
+	}, [movie]);
+
+	const fetchMovieTrailer = async () => {
+		const data = await fetchMovieVideosData({ movie });
+
+		const movieVideos = data?.videos?.results;
+
+		if (data?.videos) {
+			const index = getMovieTrailerIndex({ videos: movieVideos });
+			setMovieTrailer(data.videos?.results[index]?.key);
+		}
+	};
 	return (
 		<div className="flex flex-col py-[160px]">
 			<div className="w-[100%] h-[95vh] lg:h-[90vh] absolute top-0 left-0 -z-10">

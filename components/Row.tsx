@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import ReactPlayer from "react-player/lazy";
 import { Button } from "../components/ui/button";
 import {
@@ -8,9 +7,10 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "../components/ui/dialog";
-import { Element, Genre, Movie } from "../utils/types";
+import { Genre, Movie } from "../utils/types";
 import Thumbnail from "./Thumbnail";
 import { PlusIcon } from "lucide-react";
+import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
 
 interface IProps {
 	title: string;
@@ -45,25 +45,17 @@ const Row = ({ title, movies }: IProps) => {
 
 	useEffect(() => {
 		if (selectedMovie) {
-			fetchSelectedMovieTrailer();
+			fetchMovieTrailer();
 		}
 	}, [selectedMovie]);
 
-	const fetchSelectedMovieTrailer = async () => {
-		const { data } = await axios.get(
-			`https://api.themoviedb.org/3/${
-				selectedMovie?.media_type === "tv" ? "tv" : "movie"
-			}/${selectedMovie?.id}?api_key=${
-				process.env.NEXT_PUBLIC_MOVIES_API_KEY
-			}&language=en-US&append_to_response=videos`
-		);
+	const fetchMovieTrailer = async () => {
+		const data = await fetchMovieVideosData({ movie: selectedMovie });
 
-		const selectedMovieVideos = data.videos.results;
+		const movieVideos = data.videos.results;
 
 		if (data?.videos) {
-			const index = selectedMovieVideos.findIndex(
-				(element: Element) => element.type === "Trailer"
-			);
+			const index = getMovieTrailerIndex({ videos: movieVideos });
 			setSelectedMovieTrailer(data.videos?.results[index]?.key);
 		}
 		if (data?.genres) {

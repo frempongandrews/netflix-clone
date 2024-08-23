@@ -31,3 +31,16 @@ export interface Element {
 		| "Trailer"
 		| "Teaser";
 }
+
+export interface Video {
+	name: string;
+	id: string;
+	type:
+		| "Bloopers"
+		| "Featurette"
+		| "Behind the Scenes"
+		| "Clip"
+		| "Trailer"
+		| "Teaser";
+	key: string;
+}
