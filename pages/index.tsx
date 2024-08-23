@@ -50,7 +50,7 @@ const HomePage = ({
 				<Banner movie={movie} />
 
 				{/* rows */}
-				<section className="flex flex-col gap-10 lg:-mt-12 transition-all duration-200">
+				<section className="flex flex-col gap-10 transition-all duration-200 mt-[-100px]">
 					<Row title="Trending Now" movies={trendingNow} />
 					<Row title="Top Rated" movies={topRated} />
 					<Row title="Action Movies" movies={actionMovies} />

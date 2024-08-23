@@ -3,6 +3,7 @@ import { Movie } from "../utils/types";
 import { moviesImageBaseUrl } from "../utils/constants";
 import { useEffect, useState } from "react";
 import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
+import ReactPlayer from "react-player/lazy";
 
 interface IProps {
 	movie: Movie | null;
@@ -10,6 +11,17 @@ interface IProps {
 
 const Banner = ({ movie }: IProps) => {
 	const [movieTrailer, setMovieTrailer] = useState("");
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+
+		// component will unmount
+		return () => {
+			setIsMounted(false);
+		};
+	}, []);
+
 	useEffect(() => {
 		fetchMovieTrailer();
 		console.log("*******movieTrailer", movieTrailer);
@@ -28,7 +40,7 @@ const Banner = ({ movie }: IProps) => {
 	return (
 		<div className="flex flex-col py-[160px]">
 			<div className="w-[100%] h-[95vh] lg:h-[90vh] absolute top-0 left-0 -z-10">
-				<Image
+				{/* <Image
 					priority
 					src={`${moviesImageBaseUrl}${
 						movie?.backdrop_path || movie?.poster_path
@@ -38,9 +50,22 @@ const Banner = ({ movie }: IProps) => {
 					// }`}
 					objectFit="cover"
 					layout="fill"
-				/>
+				/> */}
+				{isMounted ? (
+					<div className="relative h-[80vh] w-[100%]">
+						<ReactPlayer
+							muted={true}
+							playing={true}
+							className="absolute top-0 left-0"
+							url={`https://www.youtube.com/watch?v=${movieTrailer}`}
+							width="100%"
+							height="100%"
+							loop={true}
+						/>
+					</div>
+				) : null}
 			</div>
-			<div>
+			<div className="mt-[100px] md:mt-[0px]">
 				<h1 className="font-bold text-3xl md:text-4xl lg:text-6xl transition-all duration-[0.4s]">
 					{movie?.title || movie?.name || movie?.original_name}
 				</h1>
