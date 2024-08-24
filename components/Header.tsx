@@ -1,29 +1,12 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useIsScrolled } from "../hooks/useIsScrolled";
 
 interface IProps {
 	showNavigation?: boolean;
 }
 
 const Header = ({ showNavigation }: IProps) => {
-	const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			if (window.scrollY > 20) {
-				setIsScrolled(true);
-			} else {
-				setIsScrolled(false);
-			}
-		};
-
-		window.addEventListener("scroll", handleScroll);
-
-		// componentWillUnmount
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-		};
-	}, []);
+	const { isScrolled } = useIsScrolled();
 
 	return (
 		<header

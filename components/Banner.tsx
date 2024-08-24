@@ -4,6 +4,7 @@ import { moviesImageBaseUrl } from "../utils/constants";
 import { useEffect, useState } from "react";
 import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
 import ReactPlayer from "react-player/lazy";
+import { useIsScrolled } from "../hooks/useIsScrolled";
 
 interface IProps {
 	movie: Movie | null;
@@ -11,6 +12,7 @@ interface IProps {
 
 const Banner = ({ movie }: IProps) => {
 	const [movieTrailer, setMovieTrailer] = useState("");
+	const { isScrolled } = useIsScrolled();
 	const [isMounted, setIsMounted] = useState(false);
 
 	useEffect(() => {
@@ -52,7 +54,11 @@ const Banner = ({ movie }: IProps) => {
 					layout="fill"
 				/> */}
 				{isMounted ? (
-					<div className="relative h-[80vh] w-[100%]">
+					<div
+						className={`${
+							!isScrolled ? "fixed" : "absolute"
+						} top-0 left-0 h-[80vh] w-[100%]`}
+					>
 						<ReactPlayer
 							muted={true}
 							playing={true}
