@@ -19,7 +19,7 @@ interface IProps {
 
 const Row = ({ title, movies }: IProps) => {
 	const [isRowScrolled, setIsRowScrolled] = useState(false);
-	const [isTrailerMuted, setIsTrailerMuted] = useState(false);
+	const [isTrailerMuted, setIsTrailerMuted] = useState(true);
 	const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 	const [selectedMovieTrailer, setSelectedMovieTrailer] = useState<string | "">(
@@ -133,6 +133,7 @@ const Row = ({ title, movies }: IProps) => {
 								<div className="relative pt-[56.25%]">
 									<ReactPlayer
 										muted={isTrailerMuted}
+										loop={true}
 										playing={isTrailerPlaying}
 										className="absolute top-0 left-0"
 										url={`https://www.youtube.com/watch?v=${selectedMovieTrailer}`}

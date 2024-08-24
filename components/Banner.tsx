@@ -26,7 +26,6 @@ const Banner = ({ movie }: IProps) => {
 
 	useEffect(() => {
 		fetchMovieTrailer();
-		console.log("*******movieTrailer", movieTrailer);
 	}, [movie]);
 
 	const fetchMovieTrailer = async () => {
