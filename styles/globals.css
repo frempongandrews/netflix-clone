@@ -3,13 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-	/* .header-link {
-		@apply cursor-pointer text-sm font-light text-[#e5e5e5] hover:text-[#b3b3b3] transition-all duration-[0.4s];
-	} */
-
-	/* .banner-button {
-		@apply flex items-center gap-2 py-2 px-6 md:py-3 md:px-8 rounded-sm text-sm font-semibold md:text-xl hover:opacity-75 transition-all duration-[0.4s];
-	} */
 	body {
 		/* theme-black has been defined in tailwind config */
 		@apply bg-theme-black text-white;
@@ -97,7 +90,7 @@
 		@apply cursor-pointer text-sm font-light text-[#e5e5e5] hover:text-[#b3b3b3] transition-all duration-300;
 	}
 
-	.banner-button {
-		@apply flex items-center gap-2 py-2 px-6 md:py-3 md:px-8 rounded-sm text-sm font-semibold md:text-xl hover:opacity-75 transition-all duration-300;
+	.banner-btn {
+		@apply flex items-center border-white cursor-pointer hover:opacity-90 hover:scale-105 rounded-sm md:rounded-md py-2 px-6 md:py-3 md:px-8 transition-all duration-200;
 	}
 }

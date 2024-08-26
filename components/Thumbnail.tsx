@@ -3,7 +3,7 @@ import { Movie } from "../utils/types";
 import { Button } from "./ui/button";
 
 interface IProps {
-	movie: Movie;
+	movie: Movie | null;
 }
 
 const Thumbnail = ({ movie }: IProps) => {
