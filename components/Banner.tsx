@@ -77,7 +77,8 @@ const Banner = ({ movie }: IProps) => {
 							!isScrolled ? "fixed" : "absolute"
 						} top-0 left-0 h-[80vh] w-[100%]`}
 					>
-						<ReactPlayer
+						{/* TODO: uncomment */}
+						{/* <ReactPlayer
 							muted={true}
 							playing={!showMovieInfo}
 							className="absolute top-0 left-0"
@@ -85,7 +86,7 @@ const Banner = ({ movie }: IProps) => {
 							width="100%"
 							height="100%"
 							loop={true}
-						/>
+						/> */}
 					</div>
 				) : null}
 			</div>
@@ -144,11 +145,14 @@ const Banner = ({ movie }: IProps) => {
 							</svg>
 						</button>
 					</DialogTrigger>
-					<DialogContent className="md:max-w-2xl bg-theme-black p-0 border-[0px] overflow-hidden">
-						<DialogTitle>{movie?.name}</DialogTitle>
+					<DialogContent className="md:max-w-2xl bg-theme-black p-0 border-[0px] overflow-hidden pt-4">
+						<DialogTitle className="px-4">
+							{movie?.title || movie?.name || movie?.original_name}
+						</DialogTitle>
 						{/* video player */}
 						<div className="relative pt-[56.25%]">
-							<ReactPlayer
+							{/* TODO: uncomment player below */}
+							{/* <ReactPlayer
 								muted={isTrailerMuted}
 								loop={true}
 								playing={isTrailerPlaying}
@@ -156,7 +160,7 @@ const Banner = ({ movie }: IProps) => {
 								url={`https://www.youtube.com/watch?v=${movieTrailer}`}
 								width="100%"
 								height="100%"
-							/>
+							/> */}
 						</div>
 
 						{/* controls */}

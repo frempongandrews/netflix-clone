@@ -127,11 +127,16 @@ const Row = ({ title, movies }: IProps) => {
 									<Thumbnail movie={movie} key={movie.id} />
 								</Button>
 							</DialogTrigger>
-							<DialogContent className="md:max-w-2xl bg-theme-black p-0 border-[0px] overflow-hidden">
-								<DialogTitle>{selectedMovie?.name}</DialogTitle>
+
+							<DialogContent className="md:max-w-2xl bg-theme-black p-0 border-[0px] overflow-hidden pt-4">
+								<DialogTitle className="px-4">
+									{selectedMovie?.title || selectedMovie?.name}
+								</DialogTitle>
+
 								{/* video player */}
+								{/* TODO: uncomment ReactPlayer below */}
 								<div className="relative pt-[56.25%]">
-									<ReactPlayer
+									{/* <ReactPlayer
 										muted={isTrailerMuted}
 										loop={true}
 										playing={isTrailerPlaying}
@@ -139,7 +144,7 @@ const Row = ({ title, movies }: IProps) => {
 										url={`https://www.youtube.com/watch?v=${selectedMovieTrailer}`}
 										width="100%"
 										height="100%"
-									/>
+									/> */}
 								</div>
 
 								{/* controls */}
@@ -227,7 +232,11 @@ const Row = ({ title, movies }: IProps) => {
 									</div>
 								</div>
 								<h6 className="flex space-x-2 text-xs items-center px-4 mt-2">
-									<span className="text-[#57BC44]">69% Match</span>
+									<span className="text-[#57BC44]">
+										{selectedMovie?.vote_average &&
+											Math.round(selectedMovie?.vote_average * 10)}
+										% Match
+									</span>
 									<span>{selectedMovie?.release_date}</span>
 									<span className="border-[1px] border-white px-2 rounded-md text-[10px]">
 										HD

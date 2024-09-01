@@ -1,15 +1,15 @@
-import AuthContextProvider from "../hooks/useAuth";
 import "../styles/globals.css";
+import AuthContextProvider from "../hooks/useAuth";
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
-			{/* <AuthContextProvider>
+			<AuthContextProvider>
 				<Component {...pageProps} />
-			</AuthContextProvider> */}
+			</AuthContextProvider>
 
-			<Component {...pageProps} />
+			{/* <Component {...pageProps} /> */}
 		</>
 	);
 }

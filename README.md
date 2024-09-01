@@ -1,14 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## How to use
 
-## Getting Started
+1. Clone the project to your local machine
+2. Install dependencies by running `npm install`
+3. Run it by running `npm run dev`
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+1.  Create google oauth credentials [here ](https://console.cloud.google.com/apis/dashboard) by creating a new project
+
+![Alt text](images/google-oauth.png)
+
+2.  Change **GOOGLE_AUTH_CLIENT_ID** and **GOOGLE_AUTH_CLIENT_SECRET** in `next.config.js`
+
+3.  Get Database connection from **mongo atlas** and change **MONGO_DB_URL** in `next.config.js`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

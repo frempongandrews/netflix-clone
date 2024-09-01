@@ -1,9 +1,8 @@
-import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
 import Header from "../components/Header";
-import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
-import { IAuthContext, useAuth } from "../hooks/useAuth";
+import { useRouter } from "next/router";
 
 type AuthInputs = {
 	email: string;
@@ -13,23 +12,23 @@ type AuthInputs = {
 const LoginPage = () => {
 	const { handleSubmit, register, formState } = useForm<AuthInputs>();
 	const { errors } = formState;
-
-	const { loginUser, registerUser } = useAuth() as IAuthContext;
+	const router = useRouter();
 
 	useEffect(() => {
+		// TODO: remove log below
 		console.log("*******FormState", formState.errors);
 	});
 
-	const onLoginUser: SubmitHandler<AuthInputs> = (data) => {
-		console.log("******Data", data);
-		const { email, password } = data;
-		loginUser({ email, password });
+	const onGoogleSignIn = () => {
+		router.push("/api/auth/google");
 	};
 
-	const onRegisterUser = (data: AuthInputs) => {
-		console.log("******Register Data", data);
+	const onLoginUser: SubmitHandler<AuthInputs> = (data) => {
+		// TODO: remove log below
+		console.log("******Data", data);
 		const { email, password } = data;
-		registerUser({ email, password });
+		// TODO
+		// loginUser({ email, password });
 	};
 
 	return (
@@ -41,13 +40,14 @@ const LoginPage = () => {
 			/>
 			<Header showNavigation={false} />
 			<div className="flex h-[100%] md:items-center pt-[100px] p-4 lg:p-6">
+				{/* TODO: Add custom registration for email and password and uncomment form below */}
 				{/* form */}
 				<form
 					className="w-[100%] md:max-w-sm mx-auto h-fit md:p-[20px] md:bg-black/75 !z-100"
 					onSubmit={handleSubmit(onLoginUser)}
 				>
 					<h1 className="font-semibold text-2xl">Sign In</h1>
-					<div className="mt-4">
+					{/* <div className="mt-4">
 						<input
 							type="text"
 							autoComplete="off"
@@ -140,14 +140,37 @@ const LoginPage = () => {
 					<div className="mt-8">
 						<p className="text-sm">
 							<span className="text-gray-400">New to Netlflix? </span>
-							{/* <Link href="/register">
-								<a className="text-white hover:underline">Sign up now</a>
-							</Link> */}
+							
 
 							<button
 								type="button"
 								className="text-white hover:underline cursor-pointer"
 								onClick={handleSubmit(onRegisterUser)}
+							>
+								Sign up now
+							</button>
+						</p>
+					</div> */}
+
+					<div className="mt-8">
+						<button
+							className="flex items-center w-full outline-none bg-theme-red h-[40px] rounded-sm text-sm font-semibold focus:outline-none hover:opacity-90 transition-all duration-200"
+							onClick={onGoogleSignIn}
+						>
+							<FcGoogle className="w-[40px] h-[20px]" />
+							<span className="flex-1">Sign in with Google </span>
+						</button>
+					</div>
+					<div className="mt-8">
+						<p className="text-sm">
+							<span className="text-gray-400">New to Netlflix? </span>
+
+							<button
+								type="button"
+								className="text-white hover:underline cursor-pointer"
+								onClick={() => {
+									router.push("/register");
+								}}
 							>
 								Sign up now
 							</button>

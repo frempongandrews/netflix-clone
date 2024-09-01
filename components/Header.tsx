@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { useIsScrolled } from "../hooks/useIsScrolled";
+import { logoutUser } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
 
 interface IProps {
 	showNavigation?: boolean;
@@ -7,6 +9,7 @@ interface IProps {
 
 const Header = ({ showNavigation }: IProps) => {
 	const { isScrolled } = useIsScrolled();
+	const { dispatch } = useAuth();
 
 	return (
 		<header
@@ -67,13 +70,13 @@ const Header = ({ showNavigation }: IProps) => {
 							/>
 						</svg>
 					</button>
-					<Link href="/account">
+					<button onClick={() => logoutUser({ dispatch })}>
 						<img
 							src="https://rb.gy/g1pwyx"
 							alt=""
 							className="cursor-pointer rounded"
 						/>
-					</Link>
+					</button>
 				</div>
 			)}
 		</header>
