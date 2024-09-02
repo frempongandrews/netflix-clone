@@ -7,17 +7,15 @@ import { connectToDB } from "../../backend/utils/db";
 
 connectToDB();
 
-const secret = process.env.SECRET.split("-");
-
 const handler = nc();
 
 const getUserFromJwt = async (req, res, next) => {
 	// TODO: remove log below
 	// console.log("*****some middleware");
-	const cookies = new Cookies(req, res, { keys: secret });
-	const jwtToken = cookies.get(keys.cookie.cookieName, {
-		signed: true,
-	});
+	console.log("***** Request Headers:", req.headers);
+
+	// extract the jwt
+	const jwtToken = req.headers.cookie.split("access_token=")[1];
 
 	// TODO: remove log below
 	console.log("**********jwtToken", jwtToken);
@@ -32,7 +30,7 @@ const getUserFromJwt = async (req, res, next) => {
 		// TODO: remove log below
 		console.log("*****Jwt Error json", JSON.stringify(err));
 		console.log("*****req.user in error block", req.user);
-		req.user = null;
+
 		next();
 	}
 };

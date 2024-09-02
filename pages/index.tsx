@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { requireAuth } from "../components/RequireAuth";
 import Header from "../components/Header";
 import moviesRequestUrl from "../utils/moviesRequestsUrl";
 import { Movie } from "../utils/types";
@@ -64,56 +65,126 @@ const HomePage = ({
 	);
 };
 
-export const getStaticProps = async () => {
-	try {
-		const [
-			netflixOriginals,
-			trendingNow,
-			topRated,
-			actionMovies,
-			comedyMovies,
-			horrorMovies,
-			romanceMovies,
-			documentaries,
-		] = await Promise.all([
-			fetch(moviesRequestUrl.netflixOriginalsUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.trendingMoviesUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.topRatedMoviesUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.actionMoviesUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.comedyMoviesUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.horrorMoviesUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.romanceMoviesUrl).then((res) => res.json()),
-			fetch(moviesRequestUrl.documentariesUrl).then((res) => res.json()),
-		]);
+export const getServerSideProps = requireAuth(
+	async ({ req, res }: { req: any; res: any }) => {
+		try {
+			const [
+				netflixOriginals,
+				trendingNow,
+				topRated,
+				actionMovies,
+				comedyMovies,
+				horrorMovies,
+				romanceMovies,
+				documentaries,
+			] = await Promise.all([
+				fetch(moviesRequestUrl.netflixOriginalsUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.trendingMoviesUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.topRatedMoviesUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.actionMoviesUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.comedyMoviesUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.horrorMoviesUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.romanceMoviesUrl).then((res) => res.json()),
+				fetch(moviesRequestUrl.documentariesUrl).then((res) => res.json()),
+			]);
 
-		return {
-			props: {
-				netflixOriginals: netflixOriginals.results,
-				trendingNow: trendingNow.results,
-				topRated: topRated.results,
-				actionMovies: actionMovies.results,
-				comedyMovies: comedyMovies.results,
-				horrorMovies: horrorMovies.results,
-				romanceMovies: romanceMovies.results,
-				documentaries: documentaries.results,
-			},
-			revalidate: 86400, // 24 hours
-		};
-	} catch (error: any) {
-		return {
-			props: {
-				errorMessage: error.message,
-				netflixOriginals: [],
-				trendingNow: [],
-				topRated: [],
-				actionMovies: [],
-				comedyMovies: [],
-				horrorMovies: [],
-				romanceMovies: [],
-				documentaries: [],
-			},
-		};
+			// Set Cache-Control headers for 24 hours
+			res.setHeader(
+				"Cache-Control",
+				"public, s-maxage=86400, stale-while-revalidate=59"
+			);
+
+			return {
+				props: {
+					netflixOriginals: netflixOriginals.results,
+					trendingNow: trendingNow.results,
+					topRated: topRated.results,
+					actionMovies: actionMovies.results,
+					comedyMovies: comedyMovies.results,
+					horrorMovies: horrorMovies.results,
+					romanceMovies: romanceMovies.results,
+					documentaries: documentaries.results,
+				},
+			};
+		} catch (error: any) {
+			return {
+				props: {
+					errorMessage: error.message,
+					netflixOriginals: [],
+					trendingNow: [],
+					topRated: [],
+					actionMovies: [],
+					comedyMovies: [],
+					horrorMovies: [],
+					romanceMovies: [],
+					documentaries: [],
+				},
+			};
+		}
 	}
-};
+);
+
+// export const getServerSideProps = async ({
+// 	req,
+// 	res,
+// }: {
+// 	req: any;
+// 	res: any;
+// }) => {
+// 	try {
+// 		const [
+// 			netflixOriginals,
+// 			trendingNow,
+// 			topRated,
+// 			actionMovies,
+// 			comedyMovies,
+// 			horrorMovies,
+// 			romanceMovies,
+// 			documentaries,
+// 		] = await Promise.all([
+// 			fetch(moviesRequestUrl.netflixOriginalsUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.trendingMoviesUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.topRatedMoviesUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.actionMoviesUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.comedyMoviesUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.horrorMoviesUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.romanceMoviesUrl).then((res) => res.json()),
+// 			fetch(moviesRequestUrl.documentariesUrl).then((res) => res.json()),
+// 		]);
+
+// 		// Set Cache-Control headers for 24 hours
+// 		res.setHeader(
+// 			"Cache-Control",
+// 			"public, s-maxage=86400, stale-while-revalidate=59"
+// 		);
+
+// 		return {
+// 			props: {
+// 				netflixOriginals: netflixOriginals.results,
+// 				trendingNow: trendingNow.results,
+// 				topRated: topRated.results,
+// 				actionMovies: actionMovies.results,
+// 				comedyMovies: comedyMovies.results,
+// 				horrorMovies: horrorMovies.results,
+// 				romanceMovies: romanceMovies.results,
+// 				documentaries: documentaries.results,
+// 			},
+// 		};
+// 	} catch (error: any) {
+// 		return {
+// 			props: {
+// 				errorMessage: error.message,
+// 				netflixOriginals: [],
+// 				trendingNow: [],
+// 				topRated: [],
+// 				actionMovies: [],
+// 				comedyMovies: [],
+// 				horrorMovies: [],
+// 				romanceMovies: [],
+// 				documentaries: [],
+// 			},
+// 		};
+// 	}
+// };
 
 export default HomePage;

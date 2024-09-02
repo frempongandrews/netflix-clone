@@ -10,7 +10,7 @@ const AuthContextProvider = ({ children }) => {
 	const router = useRouter();
 
 	useEffect(() => {
-		getCurrentUser({ dispatch, router });
+		getCurrentUser({ dispatch });
 	}, []);
 	return (
 		<AuthContext.Provider value={{ state, dispatch }}>

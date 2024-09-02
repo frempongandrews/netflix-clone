@@ -138,9 +138,9 @@ const Banner = ({ movie }: IProps) => {
 								className="size-6 ml-2"
 							>
 								<path
-									fill-rule="evenodd"
+									fillRule="evenodd"
 									d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-									clip-rule="evenodd"
+									clipRule="evenodd"
 								/>
 							</svg>
 						</button>
@@ -179,9 +179,9 @@ const Banner = ({ movie }: IProps) => {
 											className="size-4 mr-1"
 										>
 											<path
-												fill-rule="evenodd"
+												fillRule="evenodd"
 												d="M6.75 5.25a.75.75 0 0 1 .75-.75H9a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H7.5a.75.75 0 0 1-.75-.75V5.25Zm7.5 0A.75.75 0 0 1 15 4.5h1.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H15a.75.75 0 0 1-.75-.75V5.25Z"
-												clip-rule="evenodd"
+												clipRule="evenodd"
 											/>
 										</svg>
 									)}

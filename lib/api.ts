@@ -13,37 +13,41 @@ export const api = axios.create({
 	timeout: 1000 * 90, // 90 secs
 });
 
-export const getCurrentUser = async ({ dispatch, router }) => {
+export const getCurrentUser = async ({ dispatch }: { dispatch?: any }) => {
 	try {
 		const res = await api.get("/current-user");
-		console.log("******/current-user - res", res);
+		console.log("******/current-user - user", res.data.user);
 		const { user } = res.data;
-		dispatch({
-			type: GET_CURRENT_USER_SUCCESS,
-			user,
-		});
 
-		if (!user) {
-			router.push("/register");
+		if (dispatch) {
+			return dispatch({
+				type: GET_CURRENT_USER_SUCCESS,
+				user,
+			});
 		}
-	} catch (err) {
+
+		return user;
+	} catch (err: any) {
 		console.log("******err", err);
-		dispatch({
-			type: GET_CURRENT_USER_ERROR,
-			message: err?.message || "something went wrong while fetching user",
-		});
-		router.push("/register");
+		if (dispatch) {
+			return dispatch({
+				type: GET_CURRENT_USER_ERROR,
+				message: err?.message || "something went wrong while fetching user",
+			});
+		}
+
+		return err.message;
 	}
 };
 
-export const logoutUser = async ({ dispatch }) => {
+export const logoutUser = async ({ dispatch }: { dispatch?: any }) => {
 	try {
 		const res = await axios.get("/api/logout");
 		dispatch({
 			type: LOGOUT_USER_SUCCESS,
 		});
 		//   toast.success(res.data?.message || "logged out", toastOptions)
-	} catch (err) {
+	} catch (err: any) {
 		// TODO: remove log below
 		console.log("*****logoutUser - Error", err);
 		dispatch({
