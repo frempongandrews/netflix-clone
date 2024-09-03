@@ -7,6 +7,7 @@
 		/* theme-black has been defined in tailwind config */
 		@apply bg-theme-black text-white;
 	}
+
 	/* ===== Scrollbar CSS ===== */
 	/* Firefox */
 	* {

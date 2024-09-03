@@ -1,14 +1,39 @@
 import Link from "next/link";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
+import { Button } from "../components/ui/button";
 import { useIsScrolled } from "../hooks/useIsScrolled";
 import { logoutUser } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface IProps {
 	showNavigation?: boolean;
 }
 
 const Header = ({ showNavigation }: IProps) => {
+	const [isMounted, setIsMounted] = useState(false);
+	useEffect(() => {
+		setIsMounted(true);
+
+		// component will unmount
+		return () => {
+			setIsMounted(false);
+		};
+	}, []);
 	const { isScrolled } = useIsScrolled();
 	const { dispatch } = useAuth();
 	const router = useRouter();
@@ -72,12 +97,24 @@ const Header = ({ showNavigation }: IProps) => {
 							/>
 						</svg>
 					</button>
-					<button onClick={() => logoutUser({ dispatch, router })}>
-						<img
-							src="https://rb.gy/g1pwyx"
-							alt=""
-							className="cursor-pointer rounded"
-						/>
+					<button onClick={() => {}} className="relative">
+						<img src="/account-image.png" />
+						<ul className="absolute z-50 bg-theme-black text-sm top-[40px] -left-[170px]  w-[200px] text-left border-[1px] border-gray-500">
+							{/* content */}
+							<div className="p-[10px]">
+								<li className="py-2 hover:underline">
+									<span>Manage Profiles</span>
+								</li>
+								<li className="py-2 hover:underline">
+									<span>Account</span>
+								</li>
+							</div>
+
+							{/* logout */}
+							<li className="text-center py-2 border-gray-500 border-t hover:underline">
+								<span>Sign out of Netflix</span>
+							</li>
+						</ul>
 					</button>
 				</div>
 			)}
