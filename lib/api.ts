@@ -40,12 +40,19 @@ export const getCurrentUser = async ({ dispatch }: { dispatch?: any }) => {
 	}
 };
 
-export const logoutUser = async ({ dispatch }: { dispatch?: any }) => {
+export const logoutUser = async ({
+	dispatch,
+	router,
+}: {
+	dispatch?: any;
+	router: any;
+}) => {
 	try {
-		const res = await axios.get("/api/logout");
+		const res = await axios.post("/api/logout");
 		dispatch({
 			type: LOGOUT_USER_SUCCESS,
 		});
+		router.push("/login");
 		//   toast.success(res.data?.message || "logged out", toastOptions)
 	} catch (err: any) {
 		// TODO: remove log below

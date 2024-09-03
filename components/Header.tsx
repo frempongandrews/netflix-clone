@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useIsScrolled } from "../hooks/useIsScrolled";
 import { logoutUser } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
+import { useRouter } from "next/router";
 
 interface IProps {
 	showNavigation?: boolean;
@@ -10,6 +11,7 @@ interface IProps {
 const Header = ({ showNavigation }: IProps) => {
 	const { isScrolled } = useIsScrolled();
 	const { dispatch } = useAuth();
+	const router = useRouter();
 
 	return (
 		<header
@@ -70,7 +72,7 @@ const Header = ({ showNavigation }: IProps) => {
 							/>
 						</svg>
 					</button>
-					<button onClick={() => logoutUser({ dispatch })}>
+					<button onClick={() => logoutUser({ dispatch, router })}>
 						<img
 							src="https://rb.gy/g1pwyx"
 							alt=""

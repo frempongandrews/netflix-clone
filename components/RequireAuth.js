@@ -1,6 +1,8 @@
+import { getUserWithToken } from "../lib/utils";
+
 export function requireAuth(gssp) {
 	return async (context) => {
-		const { req, res } = context;
+		const { req } = context;
 
 		console.log("*******REQ in RequireAuth", req.pathname);
 
@@ -19,21 +21,7 @@ export function requireAuth(gssp) {
 		}
 
 		try {
-			// Fetch user data from your API
-			const BASE_URL =
-				process.env.NODE_ENV === "development"
-					? process.env.NEXT_PUBLIC_DEV_APP_URL
-					: process.env.NEXT_PUBLIC_PROD_APP_URL;
-			console.log(
-				"******process.env.NODE_ENV in requireAuth",
-				process.env.NODE_ENV
-			);
-			const response = await fetch(`${BASE_URL}/api/current-user`, {
-				headers: {
-					Cookie: `access_token=${token}`,
-				},
-			});
-			const data = await response.json();
+			const data = await getUserWithToken({ token });
 			const user = data.user;
 			console.log("******User in requireAuth", user);
 			// If user is valid, continue to `getServerSideProps` logic

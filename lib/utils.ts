@@ -32,3 +32,26 @@ export const getMovieTrailerIndex = ({ videos }: { videos: Video[] }) => {
 
 	return index;
 };
+
+export const getUserWithToken = async ({ token }: { token: string }) => {
+	const BASE_URL =
+		process.env.NODE_ENV === "development"
+			? process.env.NEXT_PUBLIC_DEV_APP_URL
+			: process.env.NEXT_PUBLIC_PROD_APP_URL;
+	console.log(
+		"******process.env.NODE_ENV in getUserWithToken",
+		process.env.NODE_ENV
+	);
+
+	try {
+		const response = await fetch(`${BASE_URL}/api/current-user`, {
+			headers: {
+				Cookie: `access_token=${token}`,
+			},
+		});
+		const data = await response.json();
+		return data;
+	} catch (err: any) {
+		return err.message;
+	}
+};

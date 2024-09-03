@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { withAuthRedirect } from "../components/WithAuthRedirect";
+import { NextPageContext } from "next";
 
 type AuthInputs = {
 	email: string;
@@ -177,5 +179,13 @@ const RegisterPage = () => {
 		</div>
 	);
 };
+
+export const getServerSideProps = withAuthRedirect(
+	(context: NextPageContext) => {
+		return {
+			props: {},
+		};
+	}
+);
 
 export default RegisterPage;
