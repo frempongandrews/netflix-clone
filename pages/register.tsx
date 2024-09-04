@@ -160,6 +160,21 @@ const RegisterPage = () => {
 							<span className="flex-1">Sign up with Google </span>
 						</button>
 					</div>
+					<div className="mt-8">
+						<p className="text-sm">
+							<span className="text-gray-400">Already have an account? </span>
+
+							<button
+								type="button"
+								className="text-white hover:underline cursor-pointer"
+								onClick={() => {
+									router.push("/login");
+								}}
+							>
+								Log in here
+							</button>
+						</p>
+					</div>
 				</form>
 				{/* end form */}
 			</div>

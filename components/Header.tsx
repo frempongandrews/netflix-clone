@@ -20,9 +20,6 @@ const Header = ({ showNavigation }: IProps) => {
 	const router = useRouter();
 
 	const handleClickInside = () => {
-		// isAccountMenuOpened
-		// 	? setIsAccountMenuOpened(false)
-		// 	: setIsAccountMenuOpened(true);
 		setIsAccountMenuOpened(!isAccountMenuOpened);
 	};
 
@@ -38,7 +35,7 @@ const Header = ({ showNavigation }: IProps) => {
 				isScrolled && "bg-theme-black"
 			} fixed top-0 left-0 w-full z-50 flex items-center p-4 lg:p-6 justify-between transition-all duration-[0.4s]`}
 		>
-			<div className="flex">
+			<div className="flex !z-50">
 				<Link href="/">
 					<img
 						src="https://rb.gy/ulxxee"
@@ -142,7 +139,10 @@ const Header = ({ showNavigation }: IProps) => {
 								</div>
 
 								{/* logout */}
-								<li className="text-center py-2 border-gray-500 border-t hover:underline">
+								<li
+									className="text-center py-2 border-gray-500 border-t hover:underline"
+									onClick={() => logoutUser({ dispatch, router })}
+								>
 									<span>Sign out of Netflix</span>
 								</li>
 							</ul>
