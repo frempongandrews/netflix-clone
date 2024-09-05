@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 import { useOnClickOutside } from "usehooks-ts";
 import { useIsScrolled } from "../hooks/useIsScrolled";
@@ -38,7 +38,7 @@ const Header = ({ showNavigation }: IProps) => {
 			<div className="flex !z-50">
 				<Link href="/">
 					<img
-						src="https://rb.gy/ulxxee"
+						src="/netflix-logo.svg"
 						className="object-contain w-[100px] mr-10"
 					/>
 				</Link>
@@ -130,17 +130,41 @@ const Header = ({ showNavigation }: IProps) => {
 							>
 								{/* content */}
 								<div className="p-[10px]">
+									<li className="py-2 hover:underline flex items-center">
+										<img
+											src="/netflix-avatar-teal.png"
+											className="w-8 rounded- mr-3"
+										/>
+										<span>Chris</span>
+									</li>
+									<li className="py-2 hover:underline flex items-center">
+										<img
+											src="/netflix-avatar-red.jpg"
+											className="w-8 rounded- mr-3"
+										/>
+										<span>Sis</span>
+									</li>
+									<li className="py-2 hover:underline flex items-center">
+										<img
+											src="/netflix-avatar-yellow.jpg"
+											className="w-8 rounded- mr-3"
+										/>
+										<span>Moonpie</span>
+									</li>
 									<li className="py-2 hover:underline">
 										<span>Manage Profiles</span>
 									</li>
-									<li className="py-2 hover:underline">
-										<span>Account</span>
-									</li>
 								</div>
 
-								{/* logout */}
+								{/* divider */}
+								<div className="border-gray-500 border-t h-[1px] my-2" />
+
+								{/* account / logout */}
+								<li className="px-[10px] py-2 hover:underline">
+									<span>Account</span>
+								</li>
 								<li
-									className="text-center py-2 border-gray-500 border-t hover:underline"
+									className="px-[10px] py-2  hover:underline"
 									onClick={() => logoutUser({ dispatch, router })}
 								>
 									<span>Sign out of Netflix</span>

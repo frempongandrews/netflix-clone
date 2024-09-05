@@ -32,11 +32,6 @@ const RegisterPage = () => {
 
 	return (
 		<div className="h-[100vh]">
-			<img
-				src="https://rb.gy/p2hphi"
-				className="z-[-10] hidden md:inline w-[100%] h-[100%] fixed top-0 left-0"
-				style={{ objectFit: "cover" }}
-			/>
 			<Header showNavigation={false} />
 			<div className="flex h-[100%] md:items-center pt-[100px] p-4 lg:p-6">
 				{/* TODO: Add custom registration for email and password and uncomment form below */}
