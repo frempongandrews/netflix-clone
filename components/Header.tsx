@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 
@@ -82,11 +83,16 @@ const Header = ({ showNavigation }: IProps) => {
 				isScrolled && "bg-theme-black"
 			} fixed top-0 left-0 w-full z-50 flex items-center p-4 lg:p-6 justify-between transition-all duration-[0.4s] px-4 lg:px-16`}
 		>
-			<div className="flex !z-50">
+			{/* mobile menu icon */}
+			<div className="md:hidden">
+				<RxHamburgerMenu size={24} className="cursor-pointer" />
+			</div>
+
+			<div className="md:flex !z-50">
 				<Link href="/">
 					<img
 						src="/netflix-logo.svg"
-						className="object-contain w-[100px] mr-10"
+						className="object-contain w-[100px] md:mr-10 cursor-pointer"
 					/>
 				</Link>
 
@@ -100,7 +106,7 @@ const Header = ({ showNavigation }: IProps) => {
 			{/* account / notifications / search */}
 			{showNavigation && (
 				<div className="flex space-x-4 items-center">
-					<button className="hidden sm:inline">
+					<button className="">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -117,7 +123,8 @@ const Header = ({ showNavigation }: IProps) => {
 						</svg>
 					</button>
 					<span className="header-link hidden lg:inline">Kids</span>
-					<button>
+					{/* notification icon */}
+					<button className="hidden md:inline">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
@@ -132,7 +139,7 @@ const Header = ({ showNavigation }: IProps) => {
 						</svg>
 					</button>
 					<button
-						className="relative"
+						className="relative hidden md:inline"
 						ref={accountMenuRef}
 						onClick={handleClickInside}
 					>
