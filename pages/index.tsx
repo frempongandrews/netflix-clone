@@ -5,6 +5,9 @@ import moviesRequestUrl from "../utils/moviesRequestsUrl";
 import { Movie } from "../utils/types";
 import Banner from "../components/Banner";
 import Row from "../components/Row";
+import { ServerResponse } from "http";
+import Row1 from "../components/MoviesGrid";
+import MoviesGrid from "../components/MoviesGrid";
 
 interface IProps {
 	netflixOriginals: Movie[];
@@ -36,6 +39,9 @@ const HomePage = ({
 		const movie =
 			netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)];
 		setMovie(movie);
+
+		// TODO: remove from localstorage
+		localStorage.setItem("trendingNow", JSON.stringify(trendingNow));
 	}, []);
 
 	if (errorMessage) {
@@ -46,6 +52,7 @@ const HomePage = ({
 		<div className="">
 			<Header showNavigation={true} />
 			{/* content */}
+
 			<main className="pl-4 lg:pl-16 pb-28">
 				{/* banner */}
 				<Banner movie={movie} />
@@ -66,7 +73,7 @@ const HomePage = ({
 };
 
 export const getServerSideProps = requireAuth(
-	async ({ req, res }: { req: any; res: any }) => {
+	async ({ res }: { res: ServerResponse }) => {
 		try {
 			const [
 				netflixOriginals,

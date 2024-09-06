@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+	html {
+		@apply h-full;
+	}
+
 	body {
 		/* theme-black has been defined in tailwind config */
 		@apply bg-theme-black text-white;
+		@apply h-full;
 	}
 
 	/* ===== Scrollbar CSS ===== */

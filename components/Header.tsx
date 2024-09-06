@@ -22,12 +22,12 @@ const navigationLinks = [
 		href: "/tv-shows",
 	},
 	{
-		label: "Movies",
-		href: "/movies",
+		label: "Trending",
+		href: "/trending",
 	},
 	{
-		label: "Latest",
-		href: "/latest",
+		label: "Top Rated",
+		href: "/top-rated",
 	},
 	{
 		label: "My List",
@@ -80,7 +80,7 @@ const Header = ({ showNavigation }: IProps) => {
 		<header
 			className={`${
 				isScrolled && "bg-theme-black"
-			} fixed top-0 left-0 w-full z-50 flex items-center p-4 lg:p-6 justify-between transition-all duration-[0.4s]`}
+			} fixed top-0 left-0 w-full z-50 flex items-center p-4 lg:p-6 justify-between transition-all duration-[0.4s] px-4 lg:px-16`}
 		>
 			<div className="flex !z-50">
 				<Link href="/">

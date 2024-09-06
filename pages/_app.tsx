@@ -8,8 +8,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<AuthContextProvider>
 				<Component {...pageProps} />
 			</AuthContextProvider>
-
-			{/* <Component {...pageProps} /> */}
 		</>
 	);
 }
