@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import { useRouter } from "next/router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { useOnClickOutside } from "usehooks-ts";
 import { useIsScrolled } from "../hooks/useIsScrolled";
@@ -12,12 +12,59 @@ interface IProps {
 	showNavigation?: boolean;
 }
 
+const navigationLinks = [
+	{
+		label: "Home",
+		href: "/",
+	},
+	{
+		label: "Tv Shows",
+		href: "/tv-shows",
+	},
+	{
+		label: "Movies",
+		href: "/movies",
+	},
+	{
+		label: "Latest",
+		href: "/latest",
+	},
+	{
+		label: "My List",
+		href: "/my-list",
+	},
+];
+
 const Header = ({ showNavigation }: IProps) => {
 	const accountMenuRef = useRef(null);
 	const [isAccountMenuOpened, setIsAccountMenuOpened] = useState(false);
 	const { isScrolled } = useIsScrolled();
 	const { dispatch } = useAuth();
 	const router = useRouter();
+
+	useEffect(() => {
+		console.log("******Router.pathname", router.pathname);
+		console.log("******Router", router);
+	});
+
+	const renderNavLinks = () => {
+		return navigationLinks.map((link) => {
+			return (
+				<li
+					key={link.label}
+					className={`header-link ${
+						router.asPath === link.href
+							? "text-white hover:text-white font-medium"
+							: ""
+					}`}
+				>
+					<Link href={link.href} prefetch>
+						{link.label}
+					</Link>
+				</li>
+			);
+		});
+	};
 
 	const handleClickInside = () => {
 		setIsAccountMenuOpened(!isAccountMenuOpened);
@@ -45,11 +92,7 @@ const Header = ({ showNavigation }: IProps) => {
 
 				{showNavigation && (
 					<ul className="md:flex space-x-2 hidden items-center">
-						<li className="header-link">Home</li>
-						<li className="header-link">TV Shows</li>
-						<li className="header-link">Movies</li>
-						<li className="header-link">New & Popular</li>
-						<li className="header-link">My List</li>
+						{renderNavLinks()}
 					</ul>
 				)}
 			</div>
@@ -161,7 +204,9 @@ const Header = ({ showNavigation }: IProps) => {
 
 								{/* account / logout */}
 								<li className="px-[10px] py-2 hover:underline">
-									<span>Account</span>
+									<Link href="/account">
+										<span>Account</span>
+									</Link>
 								</li>
 								<li
 									className="px-[10px] py-2  hover:underline"

@@ -88,7 +88,7 @@
 
 @layer components {
 	.header-link {
-		@apply cursor-pointer text-sm font-light text-[#e5e5e5] hover:text-[#b3b3b3] transition-all duration-300;
+		@apply cursor-pointer text-sm font-light text-[#e5e5e5] hover:text-[#c3c3c3] transition-all duration-300;
 	}
 
 	.banner-btn {
