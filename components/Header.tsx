@@ -3,6 +3,16 @@ import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "../components/ui/drawer";
 
 import { useOnClickOutside } from "usehooks-ts";
 import { useIsScrolled } from "../hooks/useIsScrolled";
@@ -46,6 +56,10 @@ const Header = ({ showNavigation }: IProps) => {
 	useEffect(() => {
 		console.log("******Router.pathname", router.pathname);
 		console.log("******Router", router);
+
+		// TODO: hiding shadcn drawer handle
+		// create ref to ul
+		// get element before ul
 	});
 
 	const renderNavLinks = () => {
@@ -85,7 +99,49 @@ const Header = ({ showNavigation }: IProps) => {
 		>
 			{/* mobile menu icon */}
 			<div className="md:hidden">
-				<RxHamburgerMenu size={24} className="cursor-pointer" />
+				<Drawer direction="left">
+					<DrawerTrigger asChild>
+						<RxHamburgerMenu size={24} className="cursor-pointer" />
+					</DrawerTrigger>
+					<DrawerContent className="border-0 fixed -top-[100px] left-0 min-w-[320px] max-w-[320px] w-[60%]">
+						<ul
+							id="mobile-drawer-nav"
+							className="bg-theme-darker-gray text-theme-gray-medium fixed top-0 left-0 w-full z-50 h-full font-light text-sm"
+						>
+							<li className="flex items-center gap-4 mt-5 px-4 py-6 cursor-pointer hover:text-white transition-all duration-300">
+								<img src="/account-image.png" className="w-[40px]" />{" "}
+								<span>Tony</span>
+							</li>
+							<div className="bg-black h-[2px]" />
+							<li className="py-4 px-4 cursor-pointer hover:text-white transition-all duration-300">
+								Notifications
+							</li>
+							<div className="bg-black h-[2px]" />
+							<li className="py-4 px-4 cursor-pointer hover:text-white transition-all duration-300">
+								Manage Profiles
+							</li>
+							<div className="bg-black h-[2px]" />
+
+							<div className="py-2">
+								<li className="py-2 px-4 border-l-4 border-theme-red font-medium text-white cursor-pointer hover:text-white transition-all duration-300">
+									Home
+								</li>
+								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
+									TV Shows
+								</li>
+								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
+									Trending
+								</li>
+								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
+									Top Rated
+								</li>
+								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
+									My List
+								</li>
+							</div>
+						</ul>
+					</DrawerContent>
+				</Drawer>
 			</div>
 
 			<div className="md:flex !z-50">
