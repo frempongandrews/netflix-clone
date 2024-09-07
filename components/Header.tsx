@@ -104,42 +104,53 @@ const Header = ({ showNavigation }: IProps) => {
 						<RxHamburgerMenu size={24} className="cursor-pointer" />
 					</DrawerTrigger>
 					<DrawerContent className="border-0 fixed -top-[100px] left-0 min-w-[320px] max-w-[320px] w-[60%]">
-						<ul
-							id="mobile-drawer-nav"
-							className="bg-theme-darker-gray text-theme-gray-medium fixed top-0 left-0 w-full z-50 h-full font-light text-sm"
-						>
-							<li className="flex items-center gap-4 mt-5 px-4 py-6 cursor-pointer hover:text-white transition-all duration-300">
-								<img src="/account-image.png" className="w-[40px]" />{" "}
-								<span>Tony</span>
-							</li>
-							<div className="bg-black h-[2px]" />
-							<li className="py-4 px-4 cursor-pointer hover:text-white transition-all duration-300">
-								Notifications
-							</li>
-							<div className="bg-black h-[2px]" />
-							<li className="py-4 px-4 cursor-pointer hover:text-white transition-all duration-300">
-								Manage Profiles
-							</li>
-							<div className="bg-black h-[2px]" />
+						{/* content */}
+						<div className="flex flex-col h-[100%] overflow-visible">
+							<ul
+								id="mobile-drawer-nav"
+								className="flex flex-col z-50 text-theme-gray-medium fixed -top-[20px] left-0 w-full h-[100%] font-light text-sm"
+							>
+								<div>
+									<li className="flex items-center gap-4 mt-5 px-4 py-6 cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray transition-all duration-300">
+										<img src="/account-image.png" className="w-[40px]" />{" "}
+										<span>Tony</span>
+									</li>
+									<div className="bg-black h-[2px]" />
+									<li className="py-4 px-4 cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+										Notifications
+									</li>
+									<div className="bg-black h-[2px]" />
+									<li className="py-4 px-4 cursor-pointer hover:text-white transition-all hover:opacity-80 bg-theme-darker-gray  duration-300">
+										Manage Profiles
+									</li>
+									<div className="bg-black h-[2px]" />
+								</div>
 
-							<div className="py-2">
-								<li className="py-2 px-4 border-l-4 border-theme-red font-medium text-white cursor-pointer hover:text-white transition-all duration-300">
-									Home
-								</li>
-								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
-									TV Shows
-								</li>
-								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
-									Trending
-								</li>
-								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
-									Top Rated
-								</li>
-								<li className="py-2 mt-2 px-4 cursor-pointer hover:text-white transition-all duration-300">
-									My List
-								</li>
-							</div>
-						</ul>
+								<div className="">
+									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+										<span className="block border-l-[4px] border-theme-red px-4 py-2">
+											Home
+										</span>
+									</li>
+									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+										<span className="block  px-4 py-2">TV Shows</span>
+									</li>
+									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+										<span className="block  px-4 py-2">Trending</span>
+									</li>
+									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+										<span className="block  px-4 py-2">Top Rated</span>
+									</li>
+									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+										<span className="block px-4 py-2">My List</span>
+									</li>
+								</div>
+								{/* widzadry to cover the rest of drawer without affecting hover opacity on links */}
+								<div className="h-[500px] bg-theme-darker-gray relative">
+									<div className="bg-theme-darker-gray h-[100px] w-full absolute -bottom-5" />
+								</div>
+							</ul>
+						</div>
 					</DrawerContent>
 				</Drawer>
 			</div>
