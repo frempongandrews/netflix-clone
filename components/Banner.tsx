@@ -128,7 +128,7 @@ const Banner = ({ movie }: IProps) => {
 							onClick={() => {
 								setShowMovieInfo(true);
 							}}
-							className="banner-btn text-white bg-gray-600/85"
+							className="banner-btn text-white bg-[#464646]"
 						>
 							<span>More Info</span>
 							<svg
