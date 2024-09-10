@@ -53,15 +53,6 @@ const Header = ({ showNavigation }: IProps) => {
 	const { dispatch } = useAuth();
 	const router = useRouter();
 
-	useEffect(() => {
-		console.log("******Router.pathname", router.pathname);
-		console.log("******Router", router);
-
-		// TODO: hiding shadcn drawer handle
-		// create ref to ul
-		// get element before ul
-	});
-
 	const renderNavLinks = () => {
 		return navigationLinks.map((link) => {
 			return (
@@ -127,7 +118,26 @@ const Header = ({ showNavigation }: IProps) => {
 								</div>
 
 								<div className="">
-									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+									{navigationLinks.map((link) => {
+										return (
+											<Link href={link.href} key={link.label}>
+												<li
+													className={`flex items-center py-2 font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray transition-all duration-300 `}
+												>
+													<span
+														className={`block px-4 py-2 ${
+															router.asPath === link.href
+																? "border-theme-red border-l-[4px]"
+																: ""
+														}`}
+													>
+														{link.label}
+													</span>
+												</li>
+											</Link>
+										);
+									})}
+									{/* <li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
 										<span className="block border-l-[4px] border-theme-red px-4 py-2">
 											Home
 										</span>
@@ -143,7 +153,7 @@ const Header = ({ showNavigation }: IProps) => {
 									</li>
 									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
 										<span className="block px-4 py-2">My List</span>
-									</li>
+									</li> */}
 								</div>
 								{/* widzadry to cover the rest of drawer without affecting hover opacity on links */}
 								<div className="h-[500px] bg-theme-darker-gray relative">

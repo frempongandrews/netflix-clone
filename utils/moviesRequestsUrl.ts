@@ -10,6 +10,7 @@ const moviesRequestUrl = {
 	horrorMoviesUrl: `${BASE_URL}/discover/movie?api_key=${MOVIES_API_KEY}&language=en-US&with_genres=27`,
 	romanceMoviesUrl: `${BASE_URL}/discover/movie?api_key=${MOVIES_API_KEY}&language=en-US&with_genres=10749`,
 	documentariesUrl: `${BASE_URL}/discover/movie?api_key=${MOVIES_API_KEY}&language=en-US&with_genres=99`,
+	tvShowsUrl: `${BASE_URL}/discover/tv?api_key=${MOVIES_API_KEY}&include_adult=false&include_null_first_air_dates=false&language=en-US`,
 };
 
 export default moviesRequestUrl;

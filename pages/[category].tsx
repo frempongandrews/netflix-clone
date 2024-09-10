@@ -1,86 +1,103 @@
 import { useEffect, useState } from "react";
+import router, { useRouter } from "next/router";
 import Header from "../components/Header";
 import Row from "../components/Row";
 import { requireAuth } from "../components/RequireAuth";
 import { ServerResponse } from "http";
 import MoviesGrid from "../components/MoviesGrid";
+import moviesRequestUrl from "../utils/moviesRequestsUrl";
+import { Movie } from "../utils/types";
 
-const CategoryPage = (props: any) => {
-	const [trendingNow, setTrendingNow] = useState([]);
+type MoviesCategoriesUrls = {
+	"tv-shows": string;
+	trending: string;
+	"top-rated": string;
+	"my-list": string;
+};
+export const validMoviesCategoriesUrls: MoviesCategoriesUrls = {
+	"tv-shows": "Tv Shows",
+	trending: "Trending",
+	"top-rated": "Top Rated",
+	"my-list": "My List",
+};
 
-	const getTrendingNow = () => {
-		// JSON.parse(localStorage.getItem("trendingNow")) ?? []
-		const trendingNowStr = localStorage.getItem("trendingNow");
-		if (trendingNowStr) {
-			const trendingNowArr = JSON.parse(trendingNowStr);
-			setTrendingNow(trendingNowArr);
-			return;
-		}
-		setTrendingNow([]);
-	};
-	useEffect(() => {
-		getTrendingNow();
-		console.log("******Category page props", props);
-	}, []);
+type Category = keyof MoviesCategoriesUrls;
+
+const CategoryPage = ({ movies }: { movies: Movie[] }) => {
+	const router = useRouter();
+	const pageUrl = router.asPath.slice(1);
+	const categoryPageTitle = (
+		validMoviesCategoriesUrls as typeof validMoviesCategoriesUrls
+	)[pageUrl as keyof typeof validMoviesCategoriesUrls];
 	return (
 		<section className="mt-[160px] px-4 lg:px-16">
 			<Header showNavigation />
 
-			<MoviesGrid title="Trending Now" movies={trendingNow} />
+			<MoviesGrid title={categoryPageTitle} movies={movies} />
 		</section>
 	);
 };
 
+const fetchCategoryMovies = async ({
+	category,
+	page,
+}: {
+	category: Category;
+	page?: number;
+}) => {
+	let movies = [];
+	let moviesUrl = "";
+	switch (category) {
+		case "tv-shows":
+			moviesUrl = moviesRequestUrl.tvShowsUrl;
+			break;
+		case "trending":
+			moviesUrl = moviesRequestUrl.trendingMoviesUrl;
+			break;
+		case "top-rated":
+			moviesUrl = moviesRequestUrl.topRatedMoviesUrl;
+			break;
+
+		default:
+			return [];
+	}
+
+	movies = !page
+		? await fetch(moviesUrl).then((res) => res.json())
+		: await fetch(moviesUrl + `${"&page="}${page}`).then((res) => res.json());
+
+	return movies.results;
+};
+
 // TODO: Fetch category movies
 export const getServerSideProps = requireAuth(
-	async ({ res, params }: { res: ServerResponse; params: any }) => {
-		console.log("*******Category getServerSideProps - Params", params);
+	async ({
+		res,
+		params,
+	}: {
+		res: ServerResponse;
+		params: { category: Category };
+	}) => {
+		console.log(
+			"*******Category getServerSideProps - Params.category",
+			params.category
+		);
 
-		try {
-			// const [
-			// 	netflixOriginals,
-			// 	trendingNow,
-			// 	topRated,
-			// 	actionMovies,
-			// 	comedyMovies,
-			// 	horrorMovies,
-			// 	romanceMovies,
-			// 	documentaries,
-			// ] = await Promise.all([
-			// 	fetch(moviesRequestUrl.netflixOriginalsUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.trendingMoviesUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.topRatedMoviesUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.actionMoviesUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.comedyMoviesUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.horrorMoviesUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.romanceMoviesUrl).then((res) => res.json()),
-			// 	fetch(moviesRequestUrl.documentariesUrl).then((res) => res.json()),
-			// ]);
-
-			// Set Cache-Control headers for 24 hours
-			// res.setHeader(
-			// 	"Cache-Control",
-			// 	"public, s-maxage=86400, stale-while-revalidate=59"
-			// );
-
+		// validate category
+		if (params.category in validMoviesCategoriesUrls) {
+			const movies = await fetchCategoryMovies({ category: params.category });
+			res.setHeader(
+				"Cache-Control",
+				"public, s-maxage=86400, stale-while-revalidate=59"
+			);
 			return {
 				props: {
-					// netflixOriginals: netflixOriginals.results,
-					// trendingNow: trendingNow.results,
-					// topRated: topRated.results,
-					// actionMovies: actionMovies.results,
-					// comedyMovies: comedyMovies.results,
-					// horrorMovies: horrorMovies.results,
-					// romanceMovies: romanceMovies.results,
-					// documentaries: documentaries.results,
+					movies,
 				},
 			};
-		} catch (error: any) {
+		} else {
 			return {
-				props: {
-					errorMessage: error.message,
-					movies: [],
-				},
+				notFound: true,
 			};
 		}
 	}
