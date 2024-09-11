@@ -1,9 +1,5 @@
 import mongoose from "mongoose";
 
-// const clientOptions = {
-//   serverApi: { version: "1", strict: true, deprecationErrors: true },
-// }
-
 export const connectToDB = async () => {
 	try {
 		mongoose.connect(process.env.MONGO_DB_URL, {});

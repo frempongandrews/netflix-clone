@@ -1,4 +1,6 @@
 import Cookies from "cookies";
+import jwt from "jsonwebtoken";
+import User from "../models/User";
 import keys from "./keys";
 const secret = process.env.SECRET.split("-");
 
@@ -16,4 +18,18 @@ export const clearAuthCookies = ({ req, res }) => {
 	const { cookieName } = keys.cookie;
 	cookies.set(cookieName, null, { expires: 0 });
 	cookies.set(`${cookieName}.sig`, null, { expires: 0 });
+};
+
+export const getUserFromJwt = async (req, res, next) => {
+	// extract the jwt
+	const jwtToken = req.headers.cookie.split("access_token=")[1];
+	try {
+		const decoded = jwt.verify(jwtToken, process.env.JWT_TOKEN_SECRET);
+		// get user from token
+		const { userId } = decoded;
+		req.user = await User.findById(userId);
+		next();
+	} catch (err) {
+		next(err);
+	}
 };

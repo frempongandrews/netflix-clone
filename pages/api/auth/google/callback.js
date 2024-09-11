@@ -13,8 +13,6 @@ const handler = nc();
 handler.get(
 	passport.authenticate("google", { failureRedirect: "/auth", session: false }),
 	function (req, res) {
-		// TODO: remove log below
-		// console.log("******req.user", req.user)
 		const user = req.user;
 		if (user.errorMessage) {
 			res.redirect("/login");
