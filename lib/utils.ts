@@ -46,6 +46,7 @@ export const getUserWithToken = async ({ token }: { token: string }) => {
 			},
 		});
 		const data = await response.json();
+
 		return data;
 	} catch (err: any) {
 		return err.message;

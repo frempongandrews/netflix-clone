@@ -16,7 +16,6 @@ export const api = axios.create({
 export const getCurrentUser = async ({ dispatch }: { dispatch?: any }) => {
 	try {
 		const res = await api.get("/current-user");
-		console.log("******/current-user - user", res.data.user);
 		const { user } = res.data;
 
 		if (dispatch) {
@@ -28,7 +27,7 @@ export const getCurrentUser = async ({ dispatch }: { dispatch?: any }) => {
 
 		return user;
 	} catch (err: any) {
-		console.log("******err", err);
+		console.log("******err", err.message);
 		if (dispatch) {
 			return dispatch({
 				type: GET_CURRENT_USER_ERROR,

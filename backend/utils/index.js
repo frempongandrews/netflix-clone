@@ -1,4 +1,5 @@
 import Cookies from "cookies";
+import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 import keys from "./keys";
@@ -22,7 +23,16 @@ export const clearAuthCookies = ({ req, res }) => {
 
 export const getUserFromJwt = async (req, res, next) => {
 	// extract the jwt
-	const jwtToken = req.headers.cookie.split("access_token=")[1];
+
+	var reqCookiesObj = cookie.parse(req.headers.cookie);
+
+	const jwtToken = reqCookiesObj["access_token"];
+
+	if (jwtToken === "undefined") {
+		next({ error: { message: "Not Authorised" } });
+		return;
+	}
+
 	try {
 		const decoded = jwt.verify(jwtToken, process.env.JWT_TOKEN_SECRET);
 		// get user from token

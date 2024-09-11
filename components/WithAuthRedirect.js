@@ -7,7 +7,6 @@ export const withAuthRedirect = (gssp) => {
 
 		const data = await getUserWithToken({ token });
 		const user = data.user;
-		console.log("******User in withAuthRedirect", user);
 
 		if (user) {
 			return {
