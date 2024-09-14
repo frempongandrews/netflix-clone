@@ -44,3 +44,18 @@ export interface Video {
 		| "Teaser";
 	key: string;
 }
+
+export type MoviesCategoriesUrls = {
+	"tv-shows": string;
+	trending: string;
+	"top-rated": string;
+	"my-list": string;
+};
+export const validMoviesCategoriesUrls: MoviesCategoriesUrls = {
+	"tv-shows": "Tv Shows",
+	trending: "Trending",
+	"top-rated": "Top Rated",
+	"my-list": "My List",
+};
+
+export type Category = keyof MoviesCategoriesUrls;

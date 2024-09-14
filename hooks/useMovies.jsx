@@ -2,10 +2,10 @@ const { useContext, useState } = require("react");
 
 const MoviesContext = useContext(null);
 
-const MoviesContextProvider = () => {
+const MoviesContextProvider = ({ children }) => {
 	const [myList, setMyList] = useState([]);
-	const [trending, setTrending] = useState([]);
-	return <MoviesContext.Provider></MoviesContext.Provider>;
+
+	return <MoviesContext.Provider>{children}</MoviesContext.Provider>;
 };
 
 export const useMovies = () => {

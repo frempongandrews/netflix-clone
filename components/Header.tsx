@@ -49,9 +49,21 @@ const navigationLinks = [
 const Header = ({ showNavigation }: IProps) => {
 	const accountMenuRef = useRef(null);
 	const [isAccountMenuOpened, setIsAccountMenuOpened] = useState(false);
+	const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 	const { isScrolled } = useIsScrolled();
 	const { dispatch } = useAuth();
 	const router = useRouter();
+
+	const handleDrawerOnRouteChange = () => {
+		setIsMobileDrawerOpen(false);
+	};
+
+	useEffect(() => {
+		router.events.on("routeChangeComplete", handleDrawerOnRouteChange);
+		return () => {
+			router.events.off("routeChangeComplete", handleDrawerOnRouteChange);
+		};
+	}, [router.events]);
 
 	const renderNavLinks = () => {
 		return navigationLinks.map((link) => {
@@ -90,7 +102,11 @@ const Header = ({ showNavigation }: IProps) => {
 		>
 			{/* mobile menu icon */}
 			<div className="md:hidden">
-				<Drawer direction="left">
+				<Drawer
+					direction="left"
+					open={isMobileDrawerOpen}
+					onOpenChange={setIsMobileDrawerOpen}
+				>
 					<DrawerTrigger asChild>
 						<RxHamburgerMenu size={24} className="cursor-pointer" />
 					</DrawerTrigger>

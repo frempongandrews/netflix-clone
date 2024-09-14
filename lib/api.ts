@@ -6,6 +6,8 @@ import {
 	LOGOUT_USER_ERROR,
 	LOGOUT_USER_SUCCESS,
 } from "../actions/authActions";
+import moviesRequestUrl from "../utils/moviesRequestsUrl";
+import { Category } from "../utils/types";
 
 export const api = axios.create({
 	baseURL: `/api`,
@@ -62,4 +64,43 @@ export const logoutUser = async ({
 		});
 		//   toast.error(err?.message || "logged out", toastOptions)
 	}
+};
+
+export const fetchCategoryMovies = async ({
+	category,
+	page,
+}: {
+	category: Category;
+	page?: number;
+}) => {
+	let movies = [];
+	let moviesUrl = "";
+	switch (category) {
+		case "tv-shows":
+			moviesUrl = moviesRequestUrl.tvShowsUrl;
+			break;
+		case "trending":
+			moviesUrl = moviesRequestUrl.trendingMoviesUrl;
+			break;
+		case "top-rated":
+			moviesUrl = moviesRequestUrl.topRatedMoviesUrl;
+			break;
+
+		default:
+			return [];
+	}
+
+	movies = !page
+		? await fetch(moviesUrl).then((res) => res.json())
+		: await fetch(moviesUrl + `${"&page="}${page}`).then((res) => res.json());
+
+	return movies.results;
+};
+
+export const addMovieToMyList = async () => {
+	// TODO: Add movie to MyList
+};
+
+export const fetchMyList = async () => {
+	// TODO: fetch MyList
 };
