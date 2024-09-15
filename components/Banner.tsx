@@ -14,6 +14,7 @@ import { useIsScrolled } from "../hooks/useIsScrolled";
 import Thumbnail from "./Thumbnail";
 import { Genre, Movie } from "../utils/types";
 import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
+import { addMovieToMyList } from "../lib/api";
 
 interface IProps {
 	movie: Movie | null;
@@ -206,7 +207,10 @@ const Banner = ({ movie }: IProps) => {
 									{!isTrailerPlaying && <span>Play</span>}
 									{isTrailerPlaying && <span>Pause</span>}
 								</Button>
-								<button className="block rounded-full p-[2px] transition-all duration-200 hover:text-white">
+								<button
+									onClick={() => addMovieToMyList()}
+									className="block rounded-full p-[2px] transition-all duration-200 hover:text-white"
+								>
 									<span
 										className="border-[1px] border-white rounded-full block p-[2px] hover:bg-white hover:text-black cursor-pointer transition-all duration-200"
 										title="Add to My List"

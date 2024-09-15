@@ -99,6 +99,15 @@ export const fetchCategoryMovies = async ({
 
 export const addMovieToMyList = async () => {
 	// TODO: Add movie to MyList
+	try {
+		const res = await api.post("/my-list", {
+			id: "123",
+			title: "test movie",
+		});
+		console.log("********addMovieToMyList - res", res);
+	} catch (err) {
+		console.log("**********addMovieToMyList - err", err);
+	}
 };
 
 export const fetchMyList = async () => {

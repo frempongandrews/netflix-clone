@@ -24,6 +24,11 @@ export const clearAuthCookies = ({ req, res }) => {
 export const getUserFromJwt = async (req, res, next) => {
 	// extract the jwt
 
+	console.log(
+		"************getUserFromJwt running - req.headers.cookie",
+		req.headers.cookie
+	);
+
 	var reqCookiesObj = cookie.parse(req.headers.cookie);
 
 	const jwtToken = reqCookiesObj["access_token"];
@@ -35,9 +40,12 @@ export const getUserFromJwt = async (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(jwtToken, process.env.JWT_TOKEN_SECRET);
+		console.log("************getUserFromJwt running - decoded", decoded);
 		// get user from token
 		const { userId } = decoded;
-		req.user = await User.findById(userId);
+		const user = await User.findById(userId);
+		console.log("************getUserFromJwt running - user", user);
+		req.user = user;
 		next();
 	} catch (err) {
 		next(err);

@@ -31,11 +31,17 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	if (req.method === "POST") {
+		// return res.status(200).json({ message: "All working" });
 		try {
-			const { movie } = req.body;
+			const movie = req.body;
 			console.log("*********Movie to Add To My List", movie);
 
 			await useMiddleware(req, res, getUserFromJwt);
+
+			console.log(
+				"************/api/my-list handler running - AFTER useMiddleware - req.user",
+				req.user
+			);
 
 			const user = req?.user;
 
@@ -45,7 +51,7 @@ export default async function handler(
 
 			const updatedUser = await User.findByIdAndUpdate(
 				user.id,
-				{ movies: [movie, ...user.movies] },
+				{ myList: [movie, ...user.myList] },
 				{ new: true }
 			);
 			console.log("*********Updated user", updatedUser);
