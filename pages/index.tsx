@@ -50,7 +50,6 @@ const HomePage = ({
 
 	return (
 		<div className="">
-			<Header showNavigation={true} />
 			{/* content */}
 
 			<main className="pl-4 lg:pl-16 pb-28">

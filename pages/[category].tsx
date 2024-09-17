@@ -27,13 +27,8 @@ const CategoryPage = ({
 		setAllMovies(movies);
 	}, []);
 
-	useEffect(() => {
-		console.log("*********Router", router);
-	});
 	return (
-		<section className="mt-[160px] px-4 lg:px-16">
-			<Header showNavigation />
-
+		<section className="pt-[160px] px-4 lg:px-16">
 			{category === "my-list" && (
 				<MoviesGrid title={categoryPageTitle} movies={movies} />
 			)}
@@ -52,11 +47,6 @@ export const getServerSideProps = requireAuth(
 		res: ServerResponse;
 		params: { category: Category };
 	}) => {
-		console.log(
-			"*******Category getServerSideProps - Params.category",
-			params.category
-		);
-
 		// validate category
 
 		if (params.category in validMoviesCategoriesUrls) {

@@ -105,3 +105,12 @@
 #radix-\:r3r\: {
 	outline: none;
 }
+
+.page {
+	opacity: 0;
+	transition: all 0.5s ease-out;
+}
+
+.page-active {
+	opacity: 1;
+}

@@ -32,7 +32,6 @@ const RegisterPage = () => {
 
 	return (
 		<div className="h-[100vh]">
-			<Header showNavigation={false} />
 			<div className="flex h-[100%] md:items-center pt-[100px] p-4 lg:p-6">
 				{/* TODO: Add custom registration for email and password and uncomment form below */}
 				{/* form */}

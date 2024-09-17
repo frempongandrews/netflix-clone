@@ -19,10 +19,6 @@ import { useIsScrolled } from "../hooks/useIsScrolled";
 import { logoutUser } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
 
-interface IProps {
-	showNavigation?: boolean;
-}
-
 const navigationLinks = [
 	{
 		label: "Home",
@@ -46,8 +42,11 @@ const navigationLinks = [
 	},
 ];
 
-const Header = ({ showNavigation }: IProps) => {
+const noNavRoutes = ["/login", "/register"];
+
+const Header = () => {
 	const accountMenuRef = useRef(null);
+	const [showNavigation, setShowNavigation] = useState(true);
 	const [isAccountMenuOpened, setIsAccountMenuOpened] = useState(false);
 	const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 	const { isScrolled } = useIsScrolled();
@@ -57,6 +56,13 @@ const Header = ({ showNavigation }: IProps) => {
 	const handleDrawerOnRouteChange = () => {
 		setIsMobileDrawerOpen(false);
 	};
+
+	useEffect(() => {
+		const currentPath = router.asPath;
+		if (noNavRoutes.includes(currentPath)) {
+			setShowNavigation(false);
+		}
+	}, [router.asPath]);
 
 	useEffect(() => {
 		router.events.on("routeChangeComplete", handleDrawerOnRouteChange);
@@ -153,23 +159,6 @@ const Header = ({ showNavigation }: IProps) => {
 											</Link>
 										);
 									})}
-									{/* <li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
-										<span className="block border-l-[4px] border-theme-red px-4 py-2">
-											Home
-										</span>
-									</li>
-									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
-										<span className="block  px-4 py-2">TV Shows</span>
-									</li>
-									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
-										<span className="block  px-4 py-2">Trending</span>
-									</li>
-									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
-										<span className="block  px-4 py-2">Top Rated</span>
-									</li>
-									<li className="flex items-center py-2  font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
-										<span className="block px-4 py-2">My List</span>
-									</li> */}
 								</div>
 								{/* widzadry to cover the rest of drawer without affecting hover opacity on links */}
 								<div className="h-[500px] bg-theme-darker-gray relative">
