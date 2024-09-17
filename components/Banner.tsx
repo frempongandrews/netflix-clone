@@ -16,6 +16,7 @@ import { Genre, Movie } from "../utils/types";
 import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
 import { addMovieToMyList } from "../lib/api";
 import { useMovies } from "../hooks/useMovies";
+import { Spinner } from "./ui/spinner";
 
 interface IProps {
 	movie: Movie | null;
@@ -216,9 +217,8 @@ const Banner = ({ movie }: IProps) => {
 										className="border-[1px] border-white rounded-full block p-[2px] hover:bg-white hover:text-black cursor-pointer transition-all duration-200"
 										title="Add to My List"
 									>
-										{/* {state.isLoading && "loading"} */}
-										Add
-										{/* <PlusIcon /> */}
+										{state.isLoading && <Spinner className="text-red-700" />}
+										{!state.isLoading && <PlusIcon />}
 									</span>
 
 									{/* <IoCheckmark size={24} title="Remove from My List" /> */}

@@ -128,7 +128,11 @@ export const addMovieToMyList = async ({
 		const res = await api.post("/my-list", movie);
 		console.log("********addMovieToMyList - res", res);
 		dispatch({ type: ADD_TO_MY_LIST_MOVIES_SUCCESS, movie });
-	} catch (err) {
+	} catch (err: any) {
 		console.log("**********addMovieToMyList - err", err);
+		dispatch({
+			type: ADD_TO_MY_LIST_MOVIES_ERROR,
+			error: err?.response?.data.message,
+		});
 	}
 };

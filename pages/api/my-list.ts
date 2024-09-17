@@ -49,6 +49,18 @@ export default async function handler(
 				return res.status(404).json({ error: "User not found" });
 			}
 
+			const userWithList = await User.findById(user.id);
+
+			const isAlreadyInMyList = userWithList.myList.some(
+				(m: any) => m.id === movie.id
+			);
+
+			if (isAlreadyInMyList) {
+				res
+					.status(409)
+					.json({ message: `Movie ${movie.id} is already in my list` });
+			}
+
 			const updatedUser = await User.findByIdAndUpdate(
 				user.id,
 				{ myList: [movie, ...user.myList] },
@@ -56,7 +68,7 @@ export default async function handler(
 			);
 			console.log("*********Updated user", updatedUser);
 
-			res.status(200).json({
+			res.status(201).json({
 				movie,
 				message: `Movie ${movie.id} successfully added to My List`,
 			});

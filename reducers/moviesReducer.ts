@@ -9,12 +9,14 @@ import {
 
 interface MoviesState {
 	myList: any[];
+	myListObj: { number?: { id?: number; overview?: string } };
 	isLoading: boolean;
 	error: string;
 }
 
 export const initialState: MoviesState = {
 	myList: [],
+	myListObj: {},
 	isLoading: false,
 	error: "",
 };
