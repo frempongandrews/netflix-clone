@@ -1,10 +1,13 @@
+import type { AppProps } from "next/app";
+import NextNProgress from "nextjs-progressbar";
+
 import "../styles/globals.css";
 import AuthContextProvider from "../hooks/useAuth";
-import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
+			<NextNProgress color="#e50914" />
 			<AuthContextProvider>
 				<Component {...pageProps} />
 			</AuthContextProvider>
