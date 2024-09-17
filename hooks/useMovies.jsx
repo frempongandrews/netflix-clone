@@ -1,15 +1,21 @@
-const { useContext, useState } = require("react");
+const { useContext, useState, useReducer, createContext } = require("react");
+import moviesReducer, { initialState } from "../reducers/moviesReducer";
 
-const MoviesContext = useContext(null);
+const MoviesContext = createContext();
 
 const MoviesContextProvider = ({ children }) => {
-	const [myList, setMyList] = useState([]);
+	const [state, dispatch] = useReducer(moviesReducer, initialState);
 
-	return <MoviesContext.Provider>{children}</MoviesContext.Provider>;
+	return (
+		<MoviesContext.Provider value={{ state, dispatch }}>
+			{children}
+		</MoviesContext.Provider>
+	);
 };
 
 export const useMovies = () => {
-	const {} = useContext(MoviesContext);
+	const { state, dispatch } = useContext(MoviesContext);
+	return { state, dispatch };
 };
 
 export default MoviesContextProvider;

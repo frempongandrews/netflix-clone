@@ -5,6 +5,7 @@ import "../styles/globals.css";
 import AuthContextProvider from "../hooks/useAuth";
 import usePageTransition from "../hooks/usePageTransition";
 import Header from "../components/Header";
+import MoviesContextProvider from "../hooks/useMovies";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const isPageActive = usePageTransition();
@@ -12,10 +13,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<>
 			<NextNProgress color="#e50914" />
 			<AuthContextProvider>
-				<div className={`page ${isPageActive ? "page-active" : ""}`}>
-					<Header />
-					<Component {...pageProps} />
-				</div>
+				<MoviesContextProvider>
+					<div className={`page ${isPageActive ? "page-active" : ""}`}>
+						<Header />
+						<Component {...pageProps} />
+					</div>
+				</MoviesContextProvider>
 			</AuthContextProvider>
 		</>
 	);

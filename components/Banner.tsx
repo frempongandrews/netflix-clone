@@ -15,6 +15,7 @@ import Thumbnail from "./Thumbnail";
 import { Genre, Movie } from "../utils/types";
 import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
 import { addMovieToMyList } from "../lib/api";
+import { useMovies } from "../hooks/useMovies";
 
 interface IProps {
 	movie: Movie | null;
@@ -29,12 +30,12 @@ const Banner = ({ movie }: IProps) => {
 	const [isTrailerPlaying, setIsTrailerPlaying] = useState(true);
 	const [movieGenres, setMovieGenres] = useState<Genre[]>([]);
 
-	useEffect(() => {
-		console.log("*****movie", movie);
-	});
+	const { state, dispatch } = useMovies();
 
 	useEffect(() => {
 		setIsMounted(true);
+
+		console.log("**********State", state);
 
 		// component will unmount
 		return () => {
@@ -50,7 +51,7 @@ const Banner = ({ movie }: IProps) => {
 		const data = await fetchMovieVideosData({ movie });
 
 		const movieVideos = data?.videos?.results;
-		console.log("***********movieVideos", movieVideos);
+
 		if (data?.videos) {
 			const index = getMovieTrailerIndex({ videos: movieVideos });
 			setMovieTrailer(data.videos?.results[index]?.key);
@@ -208,14 +209,16 @@ const Banner = ({ movie }: IProps) => {
 									{isTrailerPlaying && <span>Pause</span>}
 								</Button>
 								<button
-									onClick={() => addMovieToMyList()}
+									onClick={() => addMovieToMyList({ dispatch, movie })}
 									className="block rounded-full p-[2px] transition-all duration-200 hover:text-white"
 								>
 									<span
 										className="border-[1px] border-white rounded-full block p-[2px] hover:bg-white hover:text-black cursor-pointer transition-all duration-200"
 										title="Add to My List"
 									>
-										<PlusIcon />
+										{/* {state.isLoading && "loading"} */}
+										Add
+										{/* <PlusIcon /> */}
 									</span>
 
 									{/* <IoCheckmark size={24} title="Remove from My List" /> */}

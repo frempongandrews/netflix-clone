@@ -6,14 +6,23 @@ import {
 	LOGOUT_USER_ERROR,
 	LOGOUT_USER_SUCCESS,
 } from "../actions/authActions";
+
+import {
+	ADD_TO_MY_LIST_MOVIES_START,
+	ADD_TO_MY_LIST_MOVIES_SUCCESS,
+	ADD_TO_MY_LIST_MOVIES_ERROR,
+} from "../actions/moviesActions";
+
 import moviesRequestUrl from "../utils/moviesRequestsUrl";
-import { Category } from "../utils/types";
+import { Category, Movie } from "../utils/types";
 
 export const api = axios.create({
 	baseURL: `/api`,
 	withCredentials: true,
 	timeout: 1000 * 90, // 90 secs
 });
+
+/********** AUTH ************/
 
 export const getCurrentUser = async ({ dispatch }: { dispatch?: any }) => {
 	try {
@@ -66,6 +75,7 @@ export const logoutUser = async ({
 	}
 };
 
+/********** FETCH CATEGORY MOVIES ************/
 export const fetchCategoryMovies = async ({
 	category,
 	page,
@@ -97,19 +107,28 @@ export const fetchCategoryMovies = async ({
 	return movies.results;
 };
 
-export const addMovieToMyList = async () => {
+/**********FETCH MY LIST ************/
+export const fetchMyList = async () => {
+	// TODO: fetch MyList
+};
+
+/**********ADD TO MY LIST ************/
+
+export const addMovieToMyList = async ({
+	dispatch,
+	movie,
+}: {
+	dispatch: any;
+	movie: Movie | null;
+}) => {
 	// TODO: Add movie to MyList
+
+	dispatch({ type: ADD_TO_MY_LIST_MOVIES_START });
 	try {
-		const res = await api.post("/my-list", {
-			id: "123",
-			title: "test movie",
-		});
+		const res = await api.post("/my-list", movie);
 		console.log("********addMovieToMyList - res", res);
+		dispatch({ type: ADD_TO_MY_LIST_MOVIES_SUCCESS, movie });
 	} catch (err) {
 		console.log("**********addMovieToMyList - err", err);
 	}
-};
-
-export const fetchMyList = async () => {
-	// TODO: fetch MyList
 };
