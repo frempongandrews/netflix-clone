@@ -31,6 +31,9 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	/*** POST ***/
+	/***
+	 * - Add movie to my list
+	 *  ***/
 	if (req.method === "POST") {
 		// @@ Req Body:
 		// movie
@@ -56,6 +59,7 @@ export default async function handler(
 				res
 					.status(409)
 					.json({ message: `Movie ${movie.id} is already in my list` });
+				return;
 			}
 
 			const updatedUser = await User.findByIdAndUpdate(
@@ -66,6 +70,7 @@ export default async function handler(
 				},
 				{ new: true }
 			);
+
 			console.log("*********Updated user", updatedUser);
 
 			res.status(201).json({
@@ -77,6 +82,10 @@ export default async function handler(
 		}
 
 		/*** GET ***/
+		/**
+		 * -Get movies in my list
+		 * -Check if movie is in my list
+		 * **/
 	} else if (req.method === "GET") {
 		// @@ Query Params:
 		// params are mutually exclusive - if client asks if movie is in "my-list"
@@ -117,9 +126,6 @@ export default async function handler(
 			currentPage = 1;
 		}
 
-		console.log("*********Req.query", req.query);
-		console.log("*********Req.query - page", currentPage);
-
 		const foundUser = await User.findById(user.id);
 
 		const pageSize = 10;
@@ -130,6 +136,7 @@ export default async function handler(
 			res.status(400).json({
 				message: `Page ${currentPage} does not exist. Total pages: ${totalPages}`,
 			});
+			return;
 		}
 
 		let from = (currentPage - 1) * pageSize;
@@ -143,6 +150,45 @@ export default async function handler(
 			myList: foundUser.myList.slice(from, to),
 			myListObj: foundUser.myListObj,
 		});
+
+		/*** DELETE ***/
+		/***
+		 * - Remove movie from my list
+		 *  ***/
+
+		// @@ Query Params:
+		// movie: string - id of the movie
+	} else if (req.method === "DELETE") {
+		await useMiddleware(req, res, getUserFromJwt);
+
+		const movieId = req.query.movie as string;
+		if (!movieId) {
+			res.status(400).json({ message: "No movie id provided" });
+			return;
+		}
+
+		const user = req?.user;
+
+		if (!user) {
+			res.status(404).json({ message: "User not found" });
+			return;
+		}
+
+		delete user.myListObj[movieId];
+
+		const updatedUser = await User.findByIdAndUpdate(
+			user.id,
+			{
+				myList: user.myList.filter((m: any) => m.id !== parseInt(movieId)),
+				myListObj: user.myListObj,
+			},
+			{ new: true }
+		);
+
+		res
+			.status(204)
+			.setHeader("X-Feedback", "Resource deleted successfully")
+			.send("");
 	} else {
 		res.status(405).json({ message: `Method ${req.method} is not supported` });
 	}
