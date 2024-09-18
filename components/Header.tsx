@@ -65,9 +65,9 @@ const Header = () => {
 	}, [router.asPath]);
 
 	useEffect(() => {
-		router.events.on("routeChangeComplete", handleDrawerOnRouteChange);
+		router.events.on("routeChangeStart", handleDrawerOnRouteChange);
 		return () => {
-			router.events.off("routeChangeComplete", handleDrawerOnRouteChange);
+			router.events.off("routeChangeStart", handleDrawerOnRouteChange);
 		};
 	}, [router.events]);
 

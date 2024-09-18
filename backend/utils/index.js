@@ -29,12 +29,18 @@ export const getUserFromJwt = async (req, res, next) => {
 		req.headers.cookie
 	);
 
+	if (!req.headers.cookie) {
+		console.log("*******No cookies");
+		res.status(401).json({ message: "Not Authorised" });
+		return;
+	}
+
 	var reqCookiesObj = cookie.parse(req.headers.cookie);
 
 	const jwtToken = reqCookiesObj["access_token"];
 
 	if (jwtToken === "undefined") {
-		next({ error: { message: "Not Authorised" } });
+		res.status(401).json({ message: "Not Authorised" });
 		return;
 	}
 

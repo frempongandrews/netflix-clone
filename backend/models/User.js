@@ -39,6 +39,11 @@ const UserSchema = new mongoose.Schema({
 		type: [mongoose.Schema.Types.Mixed],
 		default: [],
 	},
+	myListObj: {
+		type: Object,
+		// if not initialised this property will not be on newly registered user
+		default: { test: "123" },
+	},
 });
 
 // sets "createdAt" and "updatedAt" fields

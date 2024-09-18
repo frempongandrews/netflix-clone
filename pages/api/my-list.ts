@@ -32,22 +32,18 @@ export default async function handler(
 ) {
 	/*** POST ***/
 	if (req.method === "POST") {
-		// return res.status(200).json({ message: "All working" });
+		// @@ Req Body:
+		// movie
+
 		try {
 			const movie = req.body;
-			console.log("*********Movie to Add To My List", movie);
 
 			await useMiddleware(req, res, getUserFromJwt);
-
-			console.log(
-				"************/api/my-list handler running - AFTER useMiddleware - req.user",
-				req.user
-			);
 
 			const user = req?.user;
 
 			if (!user) {
-				return res.status(404).json({ error: "User not found" });
+				return res.status(404).json({ message: "User not found" });
 			}
 
 			const userWithList = await User.findById(user.id);
@@ -64,7 +60,10 @@ export default async function handler(
 
 			const updatedUser = await User.findByIdAndUpdate(
 				user.id,
-				{ myList: [movie, ...user.myList] },
+				{
+					myList: [movie, ...user.myList],
+					myListObj: { [movie.id]: movie, ...user.myListObj },
+				},
 				{ new: true }
 			);
 			console.log("*********Updated user", updatedUser);
@@ -79,11 +78,38 @@ export default async function handler(
 
 		/*** GET ***/
 	} else if (req.method === "GET") {
+		// @@ Query Params:
+		// params are mutually exclusive - if client asks if movie is in "my-list"
+		// only that info will be returned as it has nothing to do with pagination
+
+		// movie: string - id of the movie
+		// page: string - current page
+
 		await useMiddleware(req, res, getUserFromJwt);
 
 		const user = req?.user;
 
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+
 		let currentPage: any = req.query.page;
+
+		let movieId = req.query.movie as string; // movie id to check if movie is in my list
+
+		if (movieId) {
+			const isMovieOnMyList = Boolean(user.myListObj[movieId]);
+			console.log(
+				`********* Is this movie ${movieId} on my list?`,
+				isMovieOnMyList
+			);
+			res.status(200).json({
+				isMovieOnMyList,
+				myList: user.myList,
+				myListObj: user.myListObj,
+			});
+			return;
+		}
 
 		currentPage = parseInt(currentPage);
 
@@ -94,15 +120,11 @@ export default async function handler(
 		console.log("*********Req.query", req.query);
 		console.log("*********Req.query - page", currentPage);
 
-		if (!user) {
-			return res.status(404).json({ error: "User not found" });
-		}
-
 		const foundUser = await User.findById(user.id);
 
 		const pageSize = 10;
 		const totalItems = foundUser.myList.length;
-		const totalPages = Math.ceil(totalItems / pageSize);
+		const totalPages = totalItems === 0 ? 1 : Math.ceil(totalItems / pageSize);
 
 		if (currentPage > totalPages) {
 			res.status(400).json({
@@ -119,6 +141,7 @@ export default async function handler(
 			totalPages,
 			isLastPage: currentPage === totalPages,
 			myList: foundUser.myList.slice(from, to),
+			myListObj: foundUser.myListObj,
 		});
 	} else {
 		res.status(405).json({ message: `Method ${req.method} is not supported` });
