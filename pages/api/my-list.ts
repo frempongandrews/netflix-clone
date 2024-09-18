@@ -116,6 +116,7 @@ export default async function handler(
 		res.status(200).json({
 			currentPage,
 			totalItems,
+			totalPages,
 			isLastPage: currentPage === totalPages,
 			myList: foundUser.myList.slice(from, to),
 		});
