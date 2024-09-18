@@ -30,6 +30,7 @@ export default async function handler(
 	req: AuthenticatedApiRequest,
 	res: NextApiResponse
 ) {
+	/*** POST ***/
 	if (req.method === "POST") {
 		// return res.status(200).json({ message: "All working" });
 		try {
@@ -75,10 +76,23 @@ export default async function handler(
 		} catch (err: any) {
 			res.status(400).json({ message: `Error adding movie: ${err.message}` });
 		}
+
+		/*** GET ***/
 	} else if (req.method === "GET") {
 		await useMiddleware(req, res, getUserFromJwt);
 
 		const user = req?.user;
+
+		let currentPage: any = req.query.page;
+
+		currentPage = parseInt(currentPage);
+
+		if (!currentPage || typeof currentPage !== "number") {
+			currentPage = 1;
+		}
+
+		console.log("*********Req.query", req.query);
+		console.log("*********Req.query - page", currentPage);
 
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
@@ -86,12 +100,26 @@ export default async function handler(
 
 		const foundUser = await User.findById(user.id);
 
-		// TODO: add pagination here
+		const pageSize = 10;
+		const totalItems = foundUser.myList.length;
+		const totalPages = Math.ceil(totalItems / pageSize);
+
+		if (currentPage > totalPages) {
+			res.status(400).json({
+				message: `Page ${currentPage} does not exist. Total pages: ${totalPages}`,
+			});
+		}
+
+		let from = (currentPage - 1) * pageSize;
+		let to = currentPage * pageSize;
 
 		res.status(200).json({
-			myList: foundUser.myList,
+			currentPage,
+			totalItems,
+			isLastPage: currentPage === totalPages,
+			myList: foundUser.myList.slice(from, to),
 		});
 	} else {
-		res.status(405).json({ error: `Method ${req.method} is not supported` });
+		res.status(405).json({ message: `Method ${req.method} is not supported` });
 	}
 }
