@@ -4,15 +4,16 @@ import { requireAuth } from "../components/RequireAuth";
 import { ServerResponse } from "http";
 import MoviesGrid from "../components/MoviesGrid";
 import { Category, Movie, validMoviesCategoriesUrls } from "../utils/types";
-import { fetchCategoryMovies } from "../lib/api";
-import { useEffect, useState } from "react";
+import { fetchCategoryMovies, fetchMyList } from "../lib/api";
+import { useContext, useEffect, useState } from "react";
+import { MoviesContext } from "../hooks/useMovies";
 
 const CategoryPage = ({
 	movies,
-	myList,
+	totalPages,
 }: {
 	movies: Movie[];
-	myList: Movie[];
+	totalPages: number;
 }) => {
 	const router = useRouter();
 	const category = router.query.category as Category;
@@ -20,21 +21,68 @@ const CategoryPage = ({
 	const categoryPageTitle = (
 		validMoviesCategoriesUrls as typeof validMoviesCategoriesUrls
 	)[pageUrl as keyof typeof validMoviesCategoriesUrls];
+	const [allMovies, setAllMovies] = useState(movies);
+	const [totalNumberOfPages, setTotalNumberOfPages] = useState(totalPages);
+	const [currentPage, setCurrentPage] = useState(1);
 
-	const [allMovies, setAllMovies] = useState<Movie[]>([]);
+	const { state, dispatch } = useContext(MoviesContext);
 
 	useEffect(() => {
 		setAllMovies(movies);
-	}, []);
+		setTotalNumberOfPages(totalPages);
+	}, [movies]);
+
+	useEffect(() => {
+		console.log("**********currentPage", currentPage);
+		console.log("**********totalNumberOfPages", totalNumberOfPages);
+	}, [allMovies]);
+
+	const fetchNextPage = async () => {
+		if (category === "my-list") {
+			if (state.isLastPage) {
+				return;
+			}
+			setCurrentPage(currentPage + 1);
+			const nextPage = currentPage + 1;
+			fetchMyList({ dispatch, page: nextPage });
+			return;
+		}
+		// all other categories
+		if (currentPage === totalNumberOfPages) {
+			return;
+		}
+		setCurrentPage(currentPage + 1);
+		const nextPage = currentPage + 1;
+		const fetchedCategoryMovies = await fetchCategoryMovies({
+			category,
+			page: nextPage,
+		});
+		setAllMovies((prev) => [...prev, ...fetchedCategoryMovies.results]);
+	};
 
 	return (
-		<section className="pt-[160px] px-4 lg:px-16">
+		<section className="pt-[160px] px-4 lg:px-16 pb-[100px]">
 			{category === "my-list" && (
-				<MoviesGrid title={categoryPageTitle} movies={movies} />
+				<MoviesGrid
+					title={categoryPageTitle}
+					movies={state.myList}
+					category={category}
+				/>
 			)}
 			{category !== "my-list" && (
-				<MoviesGrid title={categoryPageTitle} movies={allMovies} />
+				<MoviesGrid
+					title={categoryPageTitle}
+					movies={allMovies}
+					category={category}
+				/>
 			)}
+
+			<button
+				onClick={() => fetchNextPage()}
+				className="cursor-pointer bg-black w-fit px-4 py-2 text-sm"
+			>
+				LOAD MORE
+			</button>
 		</section>
 	);
 };
@@ -47,18 +95,22 @@ export const getServerSideProps = requireAuth(
 		res: ServerResponse;
 		params: { category: Category };
 	}) => {
-		// validate category
+		if (params.category === "my-list") {
+			return {
+				props: {
+					movies: [],
+					totalPages: 0,
+				},
+			};
+		}
 
 		if (params.category in validMoviesCategoriesUrls) {
-			let myList: Movie[] = [];
-			let movies = [];
+			const fetchedCategoryMovies = await fetchCategoryMovies({
+				category: params.category,
+			});
 
-			if (params.category === "my-list") {
-				// TODO: fetch myList
-				myList = [];
-			} else {
-				movies = await fetchCategoryMovies({ category: params.category });
-			}
+			const movies = fetchedCategoryMovies.results;
+			const totalPages = fetchedCategoryMovies.total_pages;
 
 			res.setHeader(
 				"Cache-Control",
@@ -67,7 +119,7 @@ export const getServerSideProps = requireAuth(
 			return {
 				props: {
 					movies,
-					myList,
+					totalPages,
 				},
 			};
 		} else {

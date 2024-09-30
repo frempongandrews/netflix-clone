@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 import { Button } from "../components/ui/button";
 import {
@@ -11,6 +11,9 @@ import { Genre, Movie } from "../utils/types";
 import Thumbnail from "./Thumbnail";
 import { PlusIcon } from "lucide-react";
 import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
+import { addMovieToMyList } from "../lib/api";
+import useMovies, { MoviesContext } from "../hooks/useMovies";
+import { Spinner } from "./ui/spinner";
 
 interface IProps {
 	title: string;
@@ -28,6 +31,8 @@ const Row = ({ title, movies }: IProps) => {
 	const [selectedMovieGenres, setSelectedMovieGenres] = useState<Genre[]>([]);
 
 	const rowRef = useRef<HTMLDivElement>(null);
+
+	const { state, dispatch } = useContext(MoviesContext);
 
 	const handleMoviesScroll = (direction: string) => {
 		setIsRowScrolled(true);
@@ -168,8 +173,13 @@ const Row = ({ title, movies }: IProps) => {
 											</svg>
 											<span>Play</span>
 										</Button>
-										<button className="block border-[1px] border-white rounded-full p-[2px] transition-all duration-200 hover:text-black hover:bg-white">
-											<PlusIcon />
+										<button
+											onClick={() => addMovieToMyList({ dispatch, movie })}
+											className="block border-[1px] border-white rounded-full p-[2px] transition-all duration-200 hover:text-black hover:bg-white"
+										>
+											{state.isLoading && <Spinner className="text-red-700" />}
+											{!state.isLoading && <PlusIcon />}
+											{/* <PlusIcon /> */}
 										</button>
 									</div>
 

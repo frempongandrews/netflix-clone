@@ -36,8 +36,6 @@ const Banner = ({ movie }: IProps) => {
 	useEffect(() => {
 		setIsMounted(true);
 
-		console.log("**********State", state);
-
 		// component will unmount
 		return () => {
 			setIsMounted(false);

@@ -40,6 +40,14 @@ const navigationLinks = [
 		label: "My List",
 		href: "/my-list",
 	},
+	// {
+	// 	label: "Account",
+	// 	href: "/account",
+	// },
+	// {
+	// 	label: "Sign out",
+	// 	href: "/sign-out",
+	// },
 ];
 
 const noNavRoutes = ["/login", "/register"];
@@ -144,7 +152,11 @@ const Header = () => {
 										return (
 											<Link href={link.href} key={link.label}>
 												<li
-													className={`flex items-center py-2 font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray transition-all duration-300 `}
+													className={`flex items-center py-2 font-medium text-white cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray transition-all duration-300 ${
+														link.href === "/account"
+															? "border-t-[2px] border-black"
+															: ""
+													}`}
 												>
 													<span
 														className={`block px-4 py-2 ${
@@ -159,6 +171,21 @@ const Header = () => {
 											</Link>
 										);
 									})}
+									<div>
+										<div className="bg-black h-[2px]" />
+										<Link href="/account">
+											<li className="py-4 px-4 cursor-pointer hover:text-white hover:opacity-80 bg-theme-darker-gray  transition-all duration-300">
+												Account
+											</li>
+										</Link>
+
+										<li
+											className="py-4 px-4 cursor-pointer hover:text-white transition-all hover:opacity-80 bg-theme-darker-gray  duration-300"
+											onClick={() => logoutUser({ dispatch, router })}
+										>
+											Sign Out
+										</li>
+									</div>
 								</div>
 								{/* widzadry to cover the rest of drawer without affecting hover opacity on links */}
 								<div className="h-[500px] bg-theme-darker-gray relative">

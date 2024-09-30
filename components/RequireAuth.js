@@ -4,11 +4,7 @@ export function requireAuth(gssp) {
 	return async (context) => {
 		const { req } = context;
 
-		console.log("*******REQ in RequireAuth", req.pathname);
-
 		const token = req.cookies.access_token;
-
-		console.log("*******Token in requireAuth", token);
 
 		if (!token) {
 			// Redirect to login page if no token
@@ -23,7 +19,7 @@ export function requireAuth(gssp) {
 		try {
 			const data = await getUserWithToken({ token });
 			const user = data.user;
-			console.log("******User in requireAuth", user);
+
 			// If user is valid, continue to `getServerSideProps` logic
 			if (user) {
 				return await gssp(context);

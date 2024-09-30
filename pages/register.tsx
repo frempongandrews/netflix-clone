@@ -17,7 +17,7 @@ const RegisterPage = () => {
 	const router = useRouter();
 
 	useEffect(() => {
-		console.log("*******FormState", formState.errors);
+		// console.log("*******FormState", formState.errors);
 	});
 
 	const onGoogleSignUp = () => {
@@ -25,7 +25,7 @@ const RegisterPage = () => {
 	};
 
 	const onSignUpUser: SubmitHandler<AuthInputs> = (data) => {
-		console.log("******Data", data);
+		// console.log("******Data", data);
 		const { email, password } = data;
 		// TODO
 	};

@@ -9,7 +9,11 @@ import {
 
 interface MoviesState {
 	myList: any[];
-	myListObj: { number?: { id?: number; overview?: string } };
+	myListObj: {};
+	currentPage: number;
+	isLastPage: boolean;
+	totalItems: number;
+	totalPages: number;
 	isLoading: boolean;
 	error: string;
 }
@@ -17,6 +21,12 @@ interface MoviesState {
 export const initialState: MoviesState = {
 	myList: [],
 	myListObj: {},
+
+	currentPage: 1,
+	isLastPage: false,
+	totalItems: 0,
+	totalPages: 0,
+
 	isLoading: false,
 	error: "",
 };
@@ -27,6 +37,7 @@ const moviesReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				isLoading: true,
+				error: "",
 			};
 
 		case ADD_TO_MY_LIST_MOVIES_SUCCESS:
@@ -38,6 +49,46 @@ const moviesReducer = (state = initialState, action: any) => {
 			};
 
 		case ADD_TO_MY_LIST_MOVIES_ERROR:
+			return {
+				...state,
+				isLoading: false,
+				error: action.error,
+			};
+
+		case FETCH_MY_LIST_MOVIES_START:
+			return {
+				...state,
+				isLoading: true,
+				error: "",
+			};
+
+		case FETCH_MY_LIST_MOVIES_SUCCESS:
+			console.log(
+				"**********FETCH_MY_LIST_MOVIES_SUCCESS action.myList",
+				action.myList
+			);
+			console.log(
+				"**********FETCH_MY_LIST_MOVIES_SUCCESS state.myList",
+				state.myList
+			);
+			return {
+				...state,
+				isLoading: false,
+				error: "",
+
+				myList:
+					action.currentPage === 1
+						? [...action.myList]
+						: [...state.myList, ...action.myList],
+				myListObj: action.myListObj,
+
+				currentPage: action.currentPage,
+				isLastPage: action.isLastPage,
+				totalItems: action.totalItems,
+				totalPages: action.totalPages,
+			};
+
+		case FETCH_MY_LIST_MOVIES_ERROR:
 			return {
 				...state,
 				isLoading: false,

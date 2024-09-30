@@ -20,7 +20,7 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		// TODO: remove log below
-		console.log("*******FormState", formState.errors);
+		// console.log("*******FormState", formState.errors);
 	});
 
 	const onGoogleSignIn = () => {
@@ -29,7 +29,7 @@ const LoginPage = () => {
 
 	const onLoginUser: SubmitHandler<AuthInputs> = (data) => {
 		// TODO: remove log below
-		console.log("******Data", data);
+		// console.log("******Data", data);
 		const { email, password } = data;
 		// TODO
 		// loginUser({ email, password });

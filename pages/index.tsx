@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { useContext, useEffect, useState } from "react";
 import { requireAuth } from "../components/RequireAuth";
 import Header from "../components/Header";
 import moviesRequestUrl from "../utils/moviesRequestsUrl";

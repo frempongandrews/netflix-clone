@@ -71,8 +71,6 @@ export default async function handler(
 				{ new: true }
 			);
 
-			console.log("*********Updated user", updatedUser);
-
 			res.status(201).json({
 				movie,
 				message: `Movie ${movie.id} successfully added to My List`,
@@ -104,18 +102,21 @@ export default async function handler(
 
 		let currentPage: any = req.query.page;
 
+		console.log(
+			"************'/api/my-list' - req.query.page - currentPage",
+			currentPage
+		);
+
 		let movieId = req.query.movie as string; // movie id to check if movie is in my list
 
 		if (movieId) {
 			const isMovieOnMyList = Boolean(user.myListObj[movieId]);
-			console.log(
-				`********* Is this movie ${movieId} on my list?`,
-				isMovieOnMyList
-			);
+
 			res.status(200).json({
 				isMovieOnMyList,
-				myList: user.myList,
-				myListObj: user.myListObj,
+				// TODO:
+				// myList: user.myList,
+				// myListObj: user.myListObj,
 			});
 			return;
 		}
@@ -141,6 +142,9 @@ export default async function handler(
 
 		let from = (currentPage - 1) * pageSize;
 		let to = currentPage * pageSize;
+
+		console.log("***********FROM", from);
+		console.log("***********TO", to);
 
 		res.status(200).json({
 			currentPage,

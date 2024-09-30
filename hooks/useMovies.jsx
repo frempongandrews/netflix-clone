@@ -1,10 +1,25 @@
-const { useContext, useState, useReducer, createContext } = require("react");
+const {
+	useContext,
+	useState,
+	useReducer,
+	createContext,
+	useEffect,
+} = require("react");
+import { fetchMyList } from "../lib/api";
 import moviesReducer, { initialState } from "../reducers/moviesReducer";
 
-const MoviesContext = createContext();
+export const MoviesContext = createContext();
 
 const MoviesContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(moviesReducer, initialState);
+
+	useEffect(() => {
+		fetchMyList({ dispatch });
+	}, []);
+
+	useEffect(() => {
+		console.log("*******Movies State", state);
+	});
 
 	return (
 		<MoviesContext.Provider value={{ state, dispatch }}>

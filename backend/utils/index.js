@@ -24,13 +24,7 @@ export const clearAuthCookies = ({ req, res }) => {
 export const getUserFromJwt = async (req, res, next) => {
 	// extract the jwt
 
-	console.log(
-		"************getUserFromJwt running - req.headers.cookie",
-		req.headers.cookie
-	);
-
 	if (!req.headers.cookie) {
-		console.log("*******No cookies");
 		res.status(401).json({ message: "Not Authorised" });
 		return;
 	}
@@ -46,11 +40,10 @@ export const getUserFromJwt = async (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(jwtToken, process.env.JWT_TOKEN_SECRET);
-		console.log("************getUserFromJwt running - decoded", decoded);
 		// get user from token
 		const { userId } = decoded;
 		const user = await User.findById(userId);
-		console.log("************getUserFromJwt running - user", user);
+
 		req.user = user;
 		next();
 	} catch (err) {

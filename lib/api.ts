@@ -11,10 +11,14 @@ import {
 	ADD_TO_MY_LIST_MOVIES_START,
 	ADD_TO_MY_LIST_MOVIES_SUCCESS,
 	ADD_TO_MY_LIST_MOVIES_ERROR,
+	FETCH_MY_LIST_MOVIES_START,
+	FETCH_MY_LIST_MOVIES_SUCCESS,
+	FETCH_MY_LIST_MOVIES_ERROR,
 } from "../actions/moviesActions";
 
 import moviesRequestUrl from "../utils/moviesRequestsUrl";
 import { Category, Movie } from "../utils/types";
+import { Dispatch } from "react";
 
 export const api = axios.create({
 	baseURL: `/api`,
@@ -38,7 +42,6 @@ export const getCurrentUser = async ({ dispatch }: { dispatch?: any }) => {
 
 		return user;
 	} catch (err: any) {
-		console.log("******err", err.message);
 		if (dispatch) {
 			return dispatch({
 				type: GET_CURRENT_USER_ERROR,
@@ -58,15 +61,13 @@ export const logoutUser = async ({
 	router: any;
 }) => {
 	try {
-		const res = await axios.post("/api/logout");
+		const res = await api.post("/logout");
 		dispatch({
 			type: LOGOUT_USER_SUCCESS,
 		});
 		router.push("/login");
 		//   toast.success(res.data?.message || "logged out", toastOptions)
 	} catch (err: any) {
-		// TODO: remove log below
-		console.log("*****logoutUser - Error", err);
 		dispatch({
 			type: LOGOUT_USER_ERROR,
 			message: err?.message || "Error during logout",
@@ -83,7 +84,7 @@ export const fetchCategoryMovies = async ({
 	category: Category;
 	page?: number;
 }) => {
-	let movies = [];
+	let movies: any = {};
 	let moviesUrl = "";
 	switch (category) {
 		case "tv-shows":
@@ -104,12 +105,50 @@ export const fetchCategoryMovies = async ({
 		? await fetch(moviesUrl).then((res) => res.json())
 		: await fetch(moviesUrl + `${"&page="}${page}`).then((res) => res.json());
 
-	return movies.results;
+	return movies;
 };
 
 /**********FETCH MY LIST ************/
-export const fetchMyList = async () => {
-	// TODO: fetch MyList
+export const fetchMyList = async ({
+	dispatch,
+	page,
+}: {
+	dispatch: any;
+	page?: number;
+}) => {
+	try {
+		dispatch({
+			type: FETCH_MY_LIST_MOVIES_START,
+		});
+		const url = `/my-list${page ? "?page=" + page : ""}`;
+		console.log("************ fetchMyList URL", url);
+		const { data } = await api.get(url);
+		const {
+			myList,
+			myListObj,
+			currentPage,
+			isLastPage,
+			totalItems,
+			totalPages,
+		} = data;
+		console.log("*********fetchMyList data", data);
+		dispatch({
+			type: FETCH_MY_LIST_MOVIES_SUCCESS,
+			myList,
+			myListObj,
+			currentPage,
+			isLastPage,
+			totalItems,
+			totalPages,
+		});
+	} catch (err: any) {
+		dispatch({
+			type: FETCH_MY_LIST_MOVIES_ERROR,
+			error:
+				err?.response?.data.message ||
+				"Something went wrong  while fetching my list",
+		});
+	}
 };
 
 /**********ADD TO MY LIST ************/
@@ -126,10 +165,8 @@ export const addMovieToMyList = async ({
 	dispatch({ type: ADD_TO_MY_LIST_MOVIES_START });
 	try {
 		const res = await api.post("/my-list", movie);
-		console.log("********addMovieToMyList - res", res);
 		dispatch({ type: ADD_TO_MY_LIST_MOVIES_SUCCESS, movie });
 	} catch (err: any) {
-		console.log("**********addMovieToMyList - err", err);
 		dispatch({
 			type: ADD_TO_MY_LIST_MOVIES_ERROR,
 			error: err?.response?.data.message,
