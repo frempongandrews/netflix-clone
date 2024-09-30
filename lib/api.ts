@@ -14,6 +14,9 @@ import {
 	FETCH_MY_LIST_MOVIES_START,
 	FETCH_MY_LIST_MOVIES_SUCCESS,
 	FETCH_MY_LIST_MOVIES_ERROR,
+	REMOVE_FROM_MY_LIST_MOVIES_START,
+	REMOVE_FROM_MY_LIST_MOVIES_SUCCESS,
+	REMOVE_FROM_MY_LIST_MOVIES_ERROR,
 } from "../actions/moviesActions";
 
 import moviesRequestUrl from "../utils/moviesRequestsUrl";
@@ -160,8 +163,6 @@ export const addMovieToMyList = async ({
 	dispatch: any;
 	movie: Movie | null;
 }) => {
-	// TODO: Add movie to MyList
-
 	dispatch({ type: ADD_TO_MY_LIST_MOVIES_START });
 	try {
 		const res = await api.post("/my-list", movie);
@@ -170,6 +171,29 @@ export const addMovieToMyList = async ({
 		dispatch({
 			type: ADD_TO_MY_LIST_MOVIES_ERROR,
 			error: err?.response?.data.message,
+		});
+	}
+};
+
+/**********REMOVE FROM MY LIST ************/
+
+export const removeMovieFromMyList = async ({
+	dispatch,
+	movie,
+}: {
+	dispatch: any;
+	movie: Movie | null;
+}) => {
+	// TODO: Add movie to MyList
+
+	dispatch({ type: REMOVE_FROM_MY_LIST_MOVIES_START });
+	try {
+		const res = await api.delete(`/my-list?movie=${movie?.id}`);
+		dispatch({ type: REMOVE_FROM_MY_LIST_MOVIES_SUCCESS, movie });
+	} catch (err: any) {
+		dispatch({
+			type: REMOVE_FROM_MY_LIST_MOVIES_ERROR,
+			error: `Error removing movie ${movie?.id} from my list`,
 		});
 	}
 };

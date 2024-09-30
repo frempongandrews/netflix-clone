@@ -5,6 +5,8 @@ import {
 	FETCH_MY_LIST_MOVIES_ERROR,
 	FETCH_MY_LIST_MOVIES_START,
 	FETCH_MY_LIST_MOVIES_SUCCESS,
+	REMOVE_FROM_MY_LIST_MOVIES_START,
+	REMOVE_FROM_MY_LIST_MOVIES_SUCCESS,
 } from "../actions/moviesActions";
 
 export interface MoviesState {
@@ -33,6 +35,7 @@ export const initialState: MoviesState = {
 
 const moviesReducer = (state = initialState, action: any) => {
 	switch (action.type) {
+		// Add to my list
 		case ADD_TO_MY_LIST_MOVIES_START:
 			return {
 				...state,
@@ -43,8 +46,10 @@ const moviesReducer = (state = initialState, action: any) => {
 		case ADD_TO_MY_LIST_MOVIES_SUCCESS:
 			return {
 				...state,
+
 				isLoading: false,
 				error: "",
+
 				myList: [action.movie, ...state.myList],
 				myListObj: { [action.movie.id]: action.movie, ...state.myListObj },
 			};
@@ -56,6 +61,7 @@ const moviesReducer = (state = initialState, action: any) => {
 				error: action.error,
 			};
 
+		// Fetch my list
 		case FETCH_MY_LIST_MOVIES_START:
 			return {
 				...state,
@@ -64,14 +70,6 @@ const moviesReducer = (state = initialState, action: any) => {
 			};
 
 		case FETCH_MY_LIST_MOVIES_SUCCESS:
-			console.log(
-				"**********FETCH_MY_LIST_MOVIES_SUCCESS action.myList",
-				action.myList
-			);
-			console.log(
-				"**********FETCH_MY_LIST_MOVIES_SUCCESS state.myList",
-				state.myList
-			);
 			const uniqueMovies = [...state.myList, ...action.myList].filter(
 				(movie, index, array) => {
 					return array.findIndex((m) => m.id === movie.id) === index;
@@ -97,6 +95,27 @@ const moviesReducer = (state = initialState, action: any) => {
 				...state,
 				isLoading: false,
 				error: action.error,
+			};
+
+		// Remove from my list
+		case REMOVE_FROM_MY_LIST_MOVIES_START:
+			return {
+				...state,
+				isLoading: true,
+				error: "",
+			};
+
+		case REMOVE_FROM_MY_LIST_MOVIES_SUCCESS:
+			const myListObjCopy = { ...state.myListObj };
+			delete myListObjCopy[action.movie.id];
+			return {
+				...state,
+
+				isLoading: false,
+				error: "",
+
+				myList: state.myList.filter((m) => m.id !== action.movie.id),
+				myListObj: { ...myListObjCopy },
 			};
 
 		default:

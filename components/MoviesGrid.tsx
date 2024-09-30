@@ -11,7 +11,7 @@ import {
 	isMovieInMyList,
 } from "../lib/utils";
 import { MoviesContext } from "../hooks/useMovies";
-import { addMovieToMyList } from "../lib/api";
+import { addMovieToMyList, removeMovieFromMyList } from "../lib/api";
 import { Spinner } from "./ui/spinner";
 import { IoCheckmark } from "react-icons/io5";
 
@@ -152,9 +152,9 @@ const MoviesGrid = ({ title, movies, category }: IProps) => {
 												!state.isLoading && (
 													<IoCheckmark
 														size={20}
-														onClick={() => {
-															console.log("*****Remove movie from my list");
-														}}
+														onClick={() =>
+															removeMovieFromMyList({ dispatch, movie })
+														}
 													/>
 												)}
 										</button>

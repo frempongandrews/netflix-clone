@@ -18,7 +18,7 @@ import {
 	getMovieTrailerIndex,
 	isMovieInMyList,
 } from "../lib/utils";
-import { addMovieToMyList } from "../lib/api";
+import { addMovieToMyList, removeMovieFromMyList } from "../lib/api";
 import { useMovies } from "../hooks/useMovies";
 import { Spinner } from "./ui/spinner";
 
@@ -237,9 +237,9 @@ const Banner = ({ movie }: IProps) => {
 											!state.isLoading && (
 												<IoCheckmark
 													size={20}
-													onClick={() => {
-														console.log("*****Remove movie from my list");
-													}}
+													onClick={() =>
+														removeMovieFromMyList({ dispatch, movie })
+													}
 												/>
 											)}
 									</span>

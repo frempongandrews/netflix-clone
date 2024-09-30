@@ -178,6 +178,11 @@ export default async function handler(
 			return;
 		}
 
+		if (!user.myListObj[movieId]) {
+			res.status(204).setHeader("X-Feedback", "Movie does NOT exist").send("");
+			return;
+		}
+
 		delete user.myListObj[movieId];
 
 		const updatedUser = await User.findByIdAndUpdate(
@@ -191,7 +196,7 @@ export default async function handler(
 
 		res
 			.status(204)
-			.setHeader("X-Feedback", "Resource deleted successfully")
+			.setHeader("X-Feedback", "Movie removed successfully from my list")
 			.send("");
 	} else {
 		res.status(405).json({ message: `Method ${req.method} is not supported` });
