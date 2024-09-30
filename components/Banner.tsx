@@ -13,7 +13,11 @@ import { Button } from "../components/ui/button";
 import { useIsScrolled } from "../hooks/useIsScrolled";
 import Thumbnail from "./Thumbnail";
 import { Genre, Movie } from "../utils/types";
-import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
+import {
+	fetchMovieVideosData,
+	getMovieTrailerIndex,
+	isMovieInMyList,
+} from "../lib/utils";
 import { addMovieToMyList } from "../lib/api";
 import { useMovies } from "../hooks/useMovies";
 import { Spinner } from "./ui/spinner";
@@ -215,27 +219,29 @@ const Banner = ({ movie }: IProps) => {
 									<span
 										className="border-[1px] border-white rounded-full block p-[2px] hover:bg-white hover:text-black cursor-pointer transition-all duration-200"
 										title={`${
-											movie && !state.myListObj[movie.id]
+											movie && !isMovieInMyList({ movie, state })
 												? "Add to My List"
 												: "Remove from My List"
 										}`}
 									>
 										{state.isLoading && <Spinner className="text-red-700" />}
 										{movie &&
-											!state.myListObj[movie.id] &&
+											!isMovieInMyList({ movie, state }) &&
 											!state.isLoading && (
 												<PlusIcon
 													onClick={() => addMovieToMyList({ dispatch, movie })}
 												/>
 											)}
-										{movie && state.myListObj[movie.id] && !state.isLoading && (
-											<IoCheckmark
-												size={20}
-												onClick={() => {
-													console.log("*****Remove movie from my list");
-												}}
-											/>
-										)}
+										{movie &&
+											isMovieInMyList({ movie, state }) &&
+											!state.isLoading && (
+												<IoCheckmark
+													size={20}
+													onClick={() => {
+														console.log("*****Remove movie from my list");
+													}}
+												/>
+											)}
 									</span>
 
 									{/* <IoCheckmark size={24} title="Remove from My List" /> */}

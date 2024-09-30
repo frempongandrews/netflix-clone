@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Movie, Video } from "../utils/types";
 import axios from "axios";
+import { MoviesState } from "../reducers/moviesReducer";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -51,4 +52,15 @@ export const getUserWithToken = async ({ token }: { token: string }) => {
 	} catch (err: any) {
 		return err.message;
 	}
+};
+
+export const isMovieInMyList = ({
+	movie,
+	state,
+}: {
+	movie: Movie;
+	state: MoviesState;
+}) => {
+	const movieId = movie.id + "";
+	return state.myListObj[movieId];
 };

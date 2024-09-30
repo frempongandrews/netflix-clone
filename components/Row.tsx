@@ -10,10 +10,15 @@ import {
 import { Genre, Movie } from "../utils/types";
 import Thumbnail from "./Thumbnail";
 import { PlusIcon } from "lucide-react";
-import { fetchMovieVideosData, getMovieTrailerIndex } from "../lib/utils";
+import {
+	fetchMovieVideosData,
+	getMovieTrailerIndex,
+	isMovieInMyList,
+} from "../lib/utils";
 import { addMovieToMyList } from "../lib/api";
 import useMovies, { MoviesContext } from "../hooks/useMovies";
 import { Spinner } from "./ui/spinner";
+import { IoCheckmark } from "react-icons/io5";
 
 interface IProps {
 	title: string;
@@ -174,12 +179,33 @@ const Row = ({ title, movies }: IProps) => {
 											<span>Play</span>
 										</Button>
 										<button
-											onClick={() => addMovieToMyList({ dispatch, movie })}
 											className="block border-[1px] border-white rounded-full p-[2px] transition-all duration-200 hover:text-black hover:bg-white"
+											title={`${
+												movie && !isMovieInMyList({ movie, state })
+													? "Add to My List"
+													: "Remove from My List"
+											}`}
 										>
 											{state.isLoading && <Spinner className="text-red-700" />}
-											{!state.isLoading && <PlusIcon />}
-											{/* <PlusIcon /> */}
+											{movie &&
+												!isMovieInMyList({ movie, state }) &&
+												!state.isLoading && (
+													<PlusIcon
+														onClick={() =>
+															addMovieToMyList({ dispatch, movie })
+														}
+													/>
+												)}
+											{movie &&
+												isMovieInMyList({ movie, state }) &&
+												!state.isLoading && (
+													<IoCheckmark
+														size={20}
+														onClick={() => {
+															console.log("*****Remove movie from my list");
+														}}
+													/>
+												)}
 										</button>
 									</div>
 

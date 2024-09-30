@@ -7,9 +7,9 @@ import {
 	FETCH_MY_LIST_MOVIES_SUCCESS,
 } from "../actions/moviesActions";
 
-interface MoviesState {
+export interface MoviesState {
 	myList: any[];
-	myListObj: {};
+	myListObj: { [key: string]: any };
 	currentPage: number;
 	isLastPage: boolean;
 	totalItems: number;
@@ -72,15 +72,18 @@ const moviesReducer = (state = initialState, action: any) => {
 				"**********FETCH_MY_LIST_MOVIES_SUCCESS state.myList",
 				state.myList
 			);
+			const uniqueMovies = [...state.myList, ...action.myList].filter(
+				(movie, index, array) => {
+					return array.findIndex((m) => m.id === movie.id) === index;
+				}
+			);
 			return {
 				...state,
 				isLoading: false,
 				error: "",
 
 				myList:
-					action.currentPage === 1
-						? [...action.myList]
-						: [...state.myList, ...action.myList],
+					action.currentPage === 1 ? [...action.myList] : [...uniqueMovies],
 				myListObj: action.myListObj,
 
 				currentPage: action.currentPage,

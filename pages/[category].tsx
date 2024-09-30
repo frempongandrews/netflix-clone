@@ -77,12 +77,30 @@ const CategoryPage = ({
 				/>
 			)}
 
-			<button
-				onClick={() => fetchNextPage()}
-				className="cursor-pointer bg-black w-fit px-4 py-2 text-sm"
-			>
-				LOAD MORE
-			</button>
+			{/*** My List ***/}
+			{category === "my-list" && state.isLastPage && <p>End of your list...</p>}
+			{category === "my-list" && !state.isLastPage && (
+				<button
+					onClick={() => fetchNextPage()}
+					className="cursor-pointer bg-black w-fit px-4 py-2 text-sm"
+				>
+					LOAD MORE
+				</button>
+			)}
+
+			{/*** All other categories ***/}
+			{category !== "my-list" && currentPage !== totalNumberOfPages && (
+				<button
+					onClick={() => fetchNextPage()}
+					className="cursor-pointer bg-black w-fit px-4 py-2 text-sm"
+				>
+					LOAD MORE
+				</button>
+			)}
+
+			{category !== "my-list" && currentPage === totalNumberOfPages && (
+				<p>End of your {category} list...</p>
+			)}
 		</section>
 	);
 };
