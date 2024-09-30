@@ -46,6 +46,10 @@ const Banner = ({ movie }: IProps) => {
 		fetchMovieTrailer();
 	}, [movie]);
 
+	useEffect(() => {
+		console.log("*******Banner state", state);
+	});
+
 	const fetchMovieTrailer = async () => {
 		const data = await fetchMovieVideosData({ movie });
 
@@ -207,16 +211,31 @@ const Banner = ({ movie }: IProps) => {
 									{!isTrailerPlaying && <span>Play</span>}
 									{isTrailerPlaying && <span>Pause</span>}
 								</Button>
-								<button
-									onClick={() => addMovieToMyList({ dispatch, movie })}
-									className="block rounded-full p-[2px] transition-all duration-200 hover:text-white"
-								>
+								<button className="block rounded-full p-[2px] transition-all duration-200 hover:text-white">
 									<span
 										className="border-[1px] border-white rounded-full block p-[2px] hover:bg-white hover:text-black cursor-pointer transition-all duration-200"
-										title="Add to My List"
+										title={`${
+											movie && !state.myListObj[movie.id]
+												? "Add to My List"
+												: "Remove from My List"
+										}`}
 									>
 										{state.isLoading && <Spinner className="text-red-700" />}
-										{!state.isLoading && <PlusIcon />}
+										{movie &&
+											!state.myListObj[movie.id] &&
+											!state.isLoading && (
+												<PlusIcon
+													onClick={() => addMovieToMyList({ dispatch, movie })}
+												/>
+											)}
+										{movie && state.myListObj[movie.id] && !state.isLoading && (
+											<IoCheckmark
+												size={20}
+												onClick={() => {
+													console.log("*****Remove movie from my list");
+												}}
+											/>
+										)}
 									</span>
 
 									{/* <IoCheckmark size={24} title="Remove from My List" /> */}

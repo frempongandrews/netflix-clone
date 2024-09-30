@@ -46,6 +46,7 @@ const moviesReducer = (state = initialState, action: any) => {
 				isLoading: false,
 				error: "",
 				myList: [action.movie, ...state.myList],
+				myListObj: { [action.movie.id]: action.movie, ...state.myListObj },
 			};
 
 		case ADD_TO_MY_LIST_MOVIES_ERROR:
