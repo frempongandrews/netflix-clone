@@ -271,7 +271,7 @@ const Header = () => {
 
 						{/* Account menu */}
 
-						<>
+						<div>
 							<GoTriangleUp
 								className={`${
 									!isAccountMenuOpened
@@ -331,7 +331,7 @@ const Header = () => {
 									<span>Sign out of Netflix</span>
 								</li>
 							</ul>
-						</>
+						</div>
 					</button>
 				</div>
 			)}
